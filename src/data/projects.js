@@ -15,7 +15,7 @@ export const PROJECTS = [
       'CI GitHub Actions, tests API & accessibilité WCAG',
     ],
     tech: ['Next.js', 'TypeScript', 'Express', 'PostgreSQL', 'Docker', 'CI/CD'],
-    github: `${EPITECH_ORG}/B-YEP-200-MLH-2-1-jobaggregator-1`,
+    github: `https://github.com/chrisrny/Job-Aggregator-`,
     live: null,
   },
   {

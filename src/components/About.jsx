@@ -30,7 +30,7 @@ export default function About() {
               Mon parcours a commencé par une première année en Licence Maths/Informatique à l'UHA. Si j'y ai développé une vraie rigueur logique, j'avais un besoin de concret. C'est ce déclic qui m'a mené à EPITECH, où ma méthode d'apprentissage prend tout son sens à travers la réalisation de projets réels et concrets.
             </p>
             <p className="about__bio reveal reveal--d3">
-              Aujourd'hui, j'oriente mon profil pour me spécialiser à terme dans la Data Science et l'Intelligence Artificielle. En parallèle, je conçois des interfaces Full-Stack modernes en React/Next.js pour rendre ces données interactives et accessibles. Pour moi, un bon code doit avant tout résoudre un problème précis et apporter une vraie valeur.
+              Aujourd'hui, bien que j'ai pu découvrir et approfondir mes connaissances dans différents domaines de l'informatique tel que la cybersécurité , le full stack web , l'UI/UX la data et l'IA , je compte à termes me spécialiser en data et IA. J'ai pu nottament acquérir de solides compétences en Web et des bases bien construites en data et IA. Pour moi, un bon code doit avant tout résoudre un problème précis et apporter une vraie valeur.
             </p>
 
             <div className="about__meta reveal reveal--d4">
