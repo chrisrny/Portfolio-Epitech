@@ -71,9 +71,9 @@ export default function Contact() {
     setIsSubmitting(true)
     setStatus('Envoi en cours...')
 
-    // On prépare les données en incluant ton Access Key publique de Web3Forms
+    // Récupération sécurisée de la clé depuis le fichier .env via Vite
     const formData = new FormData()
-    formData.append('access_key', 'fdefc55b-5c8f-40bf-98fe-7c4bf4e38ca7') // <-- À remplacer par ta clé !
+    formData.append('access_key', import.meta.env.VITE_WEB3FORMS_KEY)
     formData.append('name', form.name)
     formData.append('email', form.email)
     formData.append('message', form.message)
