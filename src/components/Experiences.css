@@ -1,0 +1,72 @@
+.experiences__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.exp-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.exp-card:hover {
+  border-color: var(--border-h);
+  box-shadow: 0 0 30px var(--accent-dim);
+  transform: translateY(-3px);
+}
+
+/* Large ghost number */
+.exp-card__num {
+  font-family: var(--font-display);
+  font-size: 7rem;
+  line-height: 1;
+  color: var(--text-ghost);
+  position: absolute;
+  bottom: -1rem;
+  right: 0.5rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.exp-card--wip {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.exp-card__icon {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.exp-card__title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: #fff;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.exp-card__date {
+  display: block;
+  font-family: var(--font-code);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+}
+
+.exp-card__desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+@media (max-width: 680px) {
+  .experiences__grid { grid-template-columns: 1fr; }
+}

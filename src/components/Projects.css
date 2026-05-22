@@ -1,0 +1,381 @@
+#projects {
+  overflow: visible;
+}
+
+#projects.section {
+  overflow: visible;
+}
+
+#projects .container {
+  overflow: visible;
+}
+
+/* =========================================
+   1. EN-TÊTE ET BOUTONS DU CARROUSEL
+========================================= */
+.projects-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3.5rem;
+  gap: 2rem;
+}
+
+.carousel-controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.carousel-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background: #6EBDB8;
+  color: #111621;
+  border-color: #6EBDB8;
+  transform: scale(1.1);
+}
+
+/* =========================================
+   2. CARROUSEL
+========================================= */
+.projects__carousel {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  overflow-x: auto;
+  overflow-y: visible;
+  gap: 2.5rem; /* Augmentation de l'espace entre les grandes cartes */
+  padding: 2rem 1rem 4rem; /* Plus d'espace pour le scale */
+  scroll-snap-type: x mandatory;
+  scroll-padding: 1rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.projects__carousel--has-expanded {
+  scroll-snap-type: none;
+}
+
+.project-card-wrap {
+  /* GROSSISSEMENT : Passage de 380px à 480px pour élargir les cartes */
+  flex: 0 0 480px;
+  width: 480px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.projects__carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================================
+   3. CARTE PROJET
+========================================= */
+.project-card {
+  width: 100%;
+  position: relative;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px; /* Des coins légèrement plus arrondis pour les grandes cartes */
+  min-height: 380px; /* Augmentation de la hauteur minimale */
+  transform: scale(1);
+  transform-origin: center center;
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease,
+    background 0.4s ease,
+    box-shadow 0.45s ease;
+  z-index: 1;
+}
+
+.project-card__toggle {
+  width: 100%;
+  min-height: 380px;
+  padding: 2.5rem 2.25rem; /* Plus d'aération à l'intérieur de la carte */
+  padding-right: 4rem;
+  background: transparent;
+  border: none;
+  border-radius: 16px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease;
+}
+
+.project-card__toggle:focus-visible {
+  outline: 2px solid #6EBDB8;
+  outline-offset: 3px;
+}
+
+.project-card__num {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 8rem; /* Chiffre fantôme plus imposant */
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.02);
+  line-height: 1;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.project-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.project-card__badge {
+  font-size: 0.8rem;
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.project-card__badge--school {
+  background: rgba(110, 189, 184, 0.15);
+  color: #6EBDB8;
+}
+
+.project-card__badge--personal {
+  background: rgba(255, 189, 46, 0.15);
+  color: #ffbd2e;
+}
+
+.project-card__links {
+  position: absolute;
+  top: 2.5rem;
+  right: 2.25rem;
+  display: flex;
+  gap: 1rem;
+  z-index: 2;
+}
+
+.project-card__link {
+  color: #a0aec0;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.project-card__link:hover {
+  color: #6EBDB8;
+  transform: scale(1.2);
+}
+
+.project-card__title {
+  font-size: 1.8rem; /* Titre plus gros et lisible */
+  color: #fff;
+  margin: 0 0 1rem;
+  z-index: 1;
+  position: relative;
+}
+
+.project-card__summary {
+  font-size: 1rem; /* Texte d'introduction plus grand */
+  color: #a0aec0;
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+}
+
+.project-card__hint {
+  font-family: var(--font-code, monospace);
+  font-size: 0.72rem;
+  color: rgba(110, 189, 184, 0.55);
+  letter-spacing: 0.06em;
+  margin: 0 0 1.25rem;
+  display: block;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.project-card__hint--close {
+  color: rgba(110, 189, 184, 0.85);
+}
+
+.project-card__details {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-bottom: 0;
+  transition:
+    grid-template-rows 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    margin 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card__details-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.project-card__details--open {
+  grid-template-rows: 1fr;
+  margin-bottom: 1.5rem;
+}
+
+.project-card__details--open .project-card__details-inner {
+  animation: projectDetailsIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+@keyframes projectDetailsIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.project-card__description {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.7;
+  margin: 0 0 1.25rem;
+}
+
+.project-card__highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.project-card__highlights li {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.5;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.project-card__highlights li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #6EBDB8;
+  font-size: 0.8rem;
+}
+
+.project-card__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  list-style: none;
+  padding: 0;
+  margin: auto 0 0;
+  z-index: 1;
+  position: relative;
+}
+
+.project-card__tech li {
+  font-family: var(--font-code, monospace);
+  font-size: 0.8rem; /* Tags de technos plus visibles */
+  color: #6EBDB8;
+  background: rgba(110, 189, 184, 0.05);
+  border: 1px solid rgba(110, 189, 184, 0.2);
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+}
+
+/* =========================================
+   4. ETAT FOCUS / BANDEAU FOCUS SUR MAQUETTE
+========================================= */
+.project-card-wrap:has(.project-card--expanded) {
+  z-index: 10;
+  flex: 0 0 540px; /* La carte prend plus de place dans le flex-row quand elle s'ouvre */
+  width: 540px;
+}
+
+.project-card--expanded {
+  transform: scale(1.04); /* Effet d'accentuation accentué */
+  border-color: #6EBDB8;
+  background: rgba(14, 22, 38, 0.75); /* Fond plus opaque pour isoler la carte */
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(110, 189, 184, 0.35),
+    0 0 32px rgba(110, 189, 184, 0.15);
+  z-index: 10;
+}
+
+.project-card__toggle:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.project-card--expanded .project-card__toggle:active {
+  transform: none;
+}
+
+/* Réflexion */
+.projects__reflection {
+  margin-top: 4rem;
+  padding: 2.25rem 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.22);
+  max-width: 820px;
+}
+
+.projects__reflection-title {
+  font-family: var(--font-display, sans-serif);
+  font-size: 1.25rem;
+  color: #fff;
+  margin-bottom: 1.25rem;
+}
+
+.projects__reflection-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.projects__reflection-text {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+}
+
+/* Responsive Téléphones */
+@media (max-width: 768px) {
+  .projects-header-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .project-card-wrap,
+  .project-card-wrap:has(.project-card--expanded) {
+    flex: 0 0 min(90vw, 360px);
+    width: min(90vw, 360px);
+  }
+
+  .project-card, 
+  .project-card__toggle {
+    min-height: 340px;
+    padding: 1.75rem 1.5rem;
+  }
+
+  .project-card__title {
+    font-size: 1.4rem;
+  }
+}
