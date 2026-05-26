@@ -108,6 +108,6 @@ export const PROJECTS = [
 
 export const REFLECTION_PARAGRAPHS = [
   "Je présente des projets complémentaires : data & ML (NextBuy, TARDIS), plateforme fullstack produit (Job Aggregator), NLP (Bookworm), IA conversationnelle orientée business (SneakR) et conception UX→MVP (Yowl).",
-  "Ma logique de sélection : montrer la capacité à livrer un livrable exploitable — notebook reproductible, API dockerisée, dashboard Streamlit ou prototype testable — pas seulement du code isolé.",
-  "Chaque projet documente des choix (stack, modèle, périmètre MVP) et des limites assumées ; c'est cette rigueur technique et sens produit que j'aime mettre en avant.",
+  "Chaque projet documente des choix (stack, modèle, périmètre MVP), des limites assumées et répondent à des problématiques concrètes ; c'est cette rigueur technique et sens produit que j'aime mettre en avant.",
+  "J'ai pu , nottament grâce à la methode d'enseignement EPITECH , m'éxercer sur ces projets a travers la pratique et l'apprentissage du travail d'équipe qui a été un élement crucial pour chacuns de ces projets ."
 ]
