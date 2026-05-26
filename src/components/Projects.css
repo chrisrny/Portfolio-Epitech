@@ -355,7 +355,7 @@
   margin: 0;
 }
 
-/* Responsive Téléphones */
+
 @media (max-width: 768px) {
   .projects-header-wrapper {
     flex-direction: column;
