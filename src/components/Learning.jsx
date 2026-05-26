@@ -19,7 +19,7 @@ const TIMELINE = [
     date: 'Juin — Août 2026',
     title: 'Stage en entreprise',
     text: 'Recherche d’un stage d’un mois pour appliquer mes compétences en développement et data en contexte professionnel.',
-    skills: ['Stage', 'Fullstack', 'Data'],
+    skills: ['Stage', 'Fullstack', 'Data','Web','...'],
     wip: true,
   },
 ]
