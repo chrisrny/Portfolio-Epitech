@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import './Hero.css'
 import { site } from '../config/site'
 
-const TAGLINE = "En première année de bachelor EPITECH développeur , concepteur d'applications . J'apprends à développer des applications guidées par la donnée. -- "
+const TAGLINE = "En première année de bachelor EPITECH développeur , concepteur d'applications . J'apprends à développer des applications guidées par la donnée. "
 
 export default function Hero() {
   const [typed, setTyped] = useState('')
