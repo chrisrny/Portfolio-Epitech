@@ -52,7 +52,7 @@ const CHANNELS = [
   {
     label: 'linkedin',
     val: 'linkedin.com/in/christophe-rajaonarivony',
-    href: 'https://www.linkedin.com/in/christophe-rajaonarivony',
+    href: 'www.linkedin.com/in/christophe-rajaonarivony-8b7370353',
     external: true,
     icon: <LinkedinIcon />,
   },
