@@ -108,6 +108,6 @@ export const PROJECTS = [
 
 export const REFLECTION_PARAGRAPHS = [
   "Je présente des projets complémentaires : data & ML (NextBuy, TARDIS), plateforme fullstack produit (Job Aggregator), NLP (Bookworm), IA conversationnelle orientée business (SneakR) et conception UX→MVP (Yowl).",
-  "Chaque projet documente des choix (stack, modèle, périmètre MVP), des limites assumées et répondent à des problématiques concrètes ; c'est cette rigueur technique et sens produit que j'aime mettre en avant.",
-  "J'ai pu , nottament grâce à la methode d'enseignement EPITECH , m'éxercer sur ces projets a travers la pratique et l'apprentissage du travail d'équipe qui a été un élement crucial pour chacuns de ces projets ."
+  "Chaque projet documente des choix (stack, modèle, périmètre MVP), des limites assumées et répond à des problématiques concrètes ; c'est cette rigueur technique et ce sens produit que j'aime mettre en avant.",
+  "J'ai pu , nottament grâce à la methode d'enseignement EPITECH , m'éxercer sur ces projets à travers la pratique et l'apprentissage du travail d'équipe qui a été un élement crucial pour chacun de ces projets ."
 ]
