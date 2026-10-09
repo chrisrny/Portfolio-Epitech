@@ -16,7 +16,7 @@ export const site = {
   cvDownloadFileName: 'CV-Christophe-Rajaonarivony.pdf',
 
 
-  siteUrl: 'https://christopherajaonarivony.github.io/portfolio/',
+  siteUrl: 'https://portfolio-zeta-topaz-63.vercel.app/',
 
   linkedinUrl: 'https://www.linkedin.com/in/christophe-rajaonarivony-8b7370353',
   githubUrl: 'https://github.com/chrisrny',
