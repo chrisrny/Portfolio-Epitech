@@ -21,7 +21,10 @@
 }
 
 .nav__logo {
-  font-weight: 500;
+  font-family: var(--display);
+  font-stretch: 75%;
+  font-size: 1.375rem;
+  font-weight: 700;
   color: var(--text);
 }
 

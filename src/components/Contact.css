@@ -5,8 +5,10 @@
 }
 
 .contact__email {
-  font-size: clamp(1.125rem, 2vw, 1.5rem);
-  font-weight: 500;
+  font-family: var(--display);
+  font-stretch: 75%;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 600;
   overflow-wrap: anywhere;
 }
 

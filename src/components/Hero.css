@@ -17,10 +17,12 @@
 
 /* ── Intro ── */
 .hero__name {
-  font-size: clamp(2.75rem, 6.4vw, 6rem);
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.035em;
+  font-family: var(--display);
+  font-stretch: 75%;
+  font-size: clamp(3.5rem, 9vw, 8.5rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.015em;
   color: #fff;
 }
 
@@ -100,8 +102,10 @@
 }
 
 .hero__row-name {
-  font-size: 1.125rem;
-  font-weight: 500;
+  font-family: var(--display);
+  font-stretch: 87.5%;
+  font-size: 1.375rem;
+  font-weight: 600;
   transition: color 0.2s ease;
 }
 
@@ -123,8 +127,11 @@
 
 .hero__row-result strong {
   display: block;
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-family: var(--display);
+  font-stretch: 75%;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
   color: var(--accent);
 }
 
