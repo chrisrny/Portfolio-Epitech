@@ -7,7 +7,7 @@
 
 .about__text {
   max-width: 40rem;
-  color: #C3CBD6;
+  color: var(--text-2);
 }
 
 .about__text p + p {

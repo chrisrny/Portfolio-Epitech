@@ -37,7 +37,7 @@
 
 .projects__btn:hover {
   border-color: var(--accent);
-  background: rgba(110, 189, 184, 0.08);
+  background: var(--accent-soft);
 }
 
 /* ── Piste : alignée à gauche sur le texte, déborde à droite ── */
@@ -71,7 +71,7 @@
 }
 
 .pcard:hover {
-  border-color: #3A4862;
+  border-color: var(--rule-hover);
 }
 
 .pcard--open {
@@ -92,8 +92,8 @@
   font-weight: 500;
 }
 
-.pcard__badge--data  { color: #6EBDB8; background: rgba(110, 189, 184, 0.12); }
-.pcard__badge--web   { color: #AEB8F5; background: rgba(150, 162, 240, 0.13); }
+.pcard__badge--data  { color: var(--accent); background: var(--accent-soft); }
+.pcard__badge--web   { color: #7CC8C0; background: rgba(124, 200, 192, 0.12); }
 .pcard__badge--other { color: #E6C17E; background: rgba(230, 193, 126, 0.12); }
 
 .pcard__context {
@@ -134,7 +134,7 @@
 
 .pcard__summary {
   margin-top: 0.75rem;
-  color: #C3CBD6;
+  color: var(--text-2);
 }
 
 /* Le chiffre clé : la signature des projets data */
@@ -172,7 +172,7 @@
   overflow: hidden;
   min-height: 0;
   font-size: 0.95rem;
-  color: #C3CBD6;
+  color: var(--text-2);
 }
 
 .pcard--open .pcard__details {
@@ -232,7 +232,7 @@
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.25em;
-  text-decoration-color: rgba(110, 189, 184, 0.45);
+  text-decoration-color: var(--accent-line);
 }
 
 .pcard__toggle:hover {
@@ -246,7 +246,7 @@
 
 .projects__reflection p {
   max-width: 44rem;
-  color: #C3CBD6;
+  color: var(--text-2);
 }
 
 .projects__reflection p + p {

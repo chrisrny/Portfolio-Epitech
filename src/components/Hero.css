@@ -31,7 +31,7 @@
   max-width: 34rem;
   font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
   line-height: 1.6;
-  color: #C3CBD6;
+  color: var(--text-2);
 }
 
 .hero__actions {
@@ -49,13 +49,13 @@
   padding: 0 1.5rem;
   border-radius: 6px;
   background: var(--accent);
-  color: #0E1520;
+  color: var(--on-accent);
   font-weight: 500;
   transition: background 0.2s ease;
 }
 
 .hero__cta:hover {
-  background: #8CCFCB;
+  background: var(--accent-hover);
 }
 
 .hero__socials {
