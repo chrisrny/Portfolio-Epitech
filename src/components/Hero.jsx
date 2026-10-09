@@ -2,7 +2,7 @@ import './Hero.css'
 import { site } from '../config/site'
 import { PROJECTS } from '../data/projects'
 
-const RECENT = PROJECTS.slice(0, 3)
+const FEATURED = PROJECTS.slice(0, 3)
 
 export default function Hero() {
   const [given, ...familyParts] = site.fullName.split(' ')
@@ -11,37 +11,44 @@ export default function Hero() {
     <section className="hero" id="home">
       <div className="container hero__inner">
         <div className="hero__intro">
-          <p className="hero__kicker">Étudiant développeur — EPITECH Mulhouse, Bachelor 2</p>
-
           <h1 className="hero__name">
             {given}<br />{familyParts.join(' ')}
           </h1>
 
           <p className="hero__lead">
-            Je conçois des applications web et des projets data &amp; IA. En 2e année à EPITECH,
-            après un stage de développement web en 2026.
+            Étudiant en 2e année à EPITECH Mulhouse, spécialisé en data et en IA.
+            Je travaille sur tout le chemin de la donnée : la nettoyer, entraîner des
+            modèles, et les rendre utiles dans de vraies applications.
           </p>
 
           <div className="hero__actions">
-            <a href="#projects" className="hero__link hero__link--primary">Voir les projets →</a>
-            <a href="#contact" className="hero__link">Me contacter</a>
-            <span className="hero__socials">
-              <a href={site.githubUrl} target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a href={site.linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-              <a href={site.cvFile} download={site.cvDownloadFileName}>CV</a>
-            </span>
+            <a href="#projects" className="hero__cta">Voir les projets</a>
+            <a href="#contact" className="link">Me contacter</a>
           </div>
+
+          <p className="hero__socials">
+            <a href={site.githubUrl} target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href={site.linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href={site.cvFile} download={site.cvDownloadFileName}>CV (PDF)</a>
+          </p>
         </div>
 
-        <div className="hero__recent">
-          <p className="hero__recent-title">Récemment</p>
+        <div className="hero__featured">
+          <h2 className="hero__featured-title">Projets à la une</h2>
           <ul>
-            {RECENT.map((p, i) => (
+            {FEATURED.map((p) => (
               <li key={p.id}>
-                <a href="#projects" className="hero__recent-row">
-                  <span className="hero__recent-num">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="hero__recent-name">{p.title}</span>
-                  <span className="hero__recent-tech">{p.tech.slice(0, 3).join(', ')}</span>
+                <a href="#projects" className="hero__row">
+                  <span className="hero__row-text">
+                    <span className="hero__row-name">{p.title}</span>
+                    <span className="hero__row-summary">{p.summary}</span>
+                  </span>
+                  {p.result && (
+                    <span className="hero__row-result">
+                      <strong>{p.result.value}</strong>
+                      <span>{p.result.label}</span>
+                    </span>
+                  )}
                 </a>
               </li>
             ))}

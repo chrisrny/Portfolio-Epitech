@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import './Projects.css'
 import { PROJECTS, REFLECTION_PARAGRAPHS } from '../data/projects'
 
-const BADGES = { school: 'Scolaire', personal: 'Personnel', pro: 'Stage' }
+const DOMAIN_CLASS = { 'Data & IA': 'data', 'Développement web': 'web', Autres: 'other' }
 
 const GithubIcon = () => (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
@@ -18,172 +18,106 @@ const ExternalIcon = () => (
   </svg>
 )
 
-const ArrowLeft = () => (
-  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <polyline points="15 18 9 12 15 6" />
-  </svg>
-)
-
-const ArrowRight = () => (
-  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <polyline points="9 18 15 12 9 6" />
+const Chevron = ({ dir }) => (
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <polyline points={dir === 'left' ? '15 18 9 12 15 6' : '9 18 15 12 9 6'} />
   </svg>
 )
 
 export default function Projects() {
-  const carouselRef = useRef(null)
-  const [expandedId, setExpandedId] = useState(null)
+  const trackRef = useRef(null)
+  const [openId, setOpenId] = useState(null)
 
-  const toggleCard = (id, wrapEl) => {
-    setExpandedId((current) => {
-      const next = current === id ? null : id
-      if (next && wrapEl) {
-        window.requestAnimationFrame(() => {
-          wrapEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
-        })
-      }
-      return next
-    })
-  }
-
-  const scroll = (direction) => {
-    const el = carouselRef.current
+  const scroll = (dir) => {
+    const el = trackRef.current
     const card = el?.firstElementChild
     if (!card) return
     // largeur réelle d'une carte + gap → fonctionne aussi sur mobile
     const step = card.offsetWidth + parseFloat(getComputedStyle(el).columnGap || 0)
-    el.scrollBy({ left: direction === 'left' ? -step : step, behavior: 'smooth' })
+    el.scrollBy({ left: dir * step, behavior: 'smooth' })
   }
 
   return (
-    <section className="section" id="projects">
-      <span className="section__watermark" aria-hidden="true">03</span>
-
-      <div className="container">
-        <div className="section__header reveal projects-header-wrapper">
-          <div>
-            <span className="section__tag">Projets</span>
-            <h2 className="section__title">Mes réalisations</h2>
-            <p className="section__subtitle">
-              Stage et projets EPITECH — data, IA, fullstack, jeu vidéo et product design.
-            </p>
-          </div>
-
-          <div className="carousel-controls">
-            <button type="button" className="carousel-btn" onClick={() => scroll('left')} aria-label="Projets précédents">
-              <ArrowLeft />
-            </button>
-            <button type="button" className="carousel-btn" onClick={() => scroll('right')} aria-label="Projets suivants">
-              <ArrowRight />
-            </button>
-          </div>
+    <section className="section projects" id="projects">
+      <div className="container projects__head">
+        <div>
+          <h2 className="section__title">Projets</h2>
+          <p className="section__note">Data et IA d’abord, puis le développement web.</p>
         </div>
+        <div className="projects__controls">
+          <button type="button" className="projects__btn" onClick={() => scroll(-1)} aria-label="Projets précédents">
+            <Chevron dir="left" />
+          </button>
+          <button type="button" className="projects__btn" onClick={() => scroll(1)} aria-label="Projets suivants">
+            <Chevron dir="right" />
+          </button>
+        </div>
+      </div>
 
-        <div
-          className={`projects__carousel${expandedId ? ' projects__carousel--has-expanded' : ''}`}
-          ref={carouselRef}
-        >
-          {PROJECTS.map((p, i) => {
-            const isExpanded = expandedId === p.id
-            return (
-              <div
-                key={p.id}
-                className={`project-card-wrap reveal reveal--d${Math.min(i + 1, 6)}`}
-              >
-                <article
-                  className={`project-card${isExpanded ? ' project-card--expanded' : ''}`}
-                >
-                  <button
-                    type="button"
-                    className="project-card__toggle"
-                    aria-expanded={isExpanded}
-                    onClick={(e) => toggleCard(p.id, e.currentTarget.closest('.project-card-wrap'))}
-                  >
-                    <span className="project-card__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-
-                    <div className="project-card__header">
-                      <span className={`project-card__badge project-card__badge--${p.category}`}>
-                        {BADGES[p.category]}
-                      </span>
-                    </div>
-
-                    <h3 className="project-card__title">{p.title}</h3>
-                    <p className="project-card__summary">{p.summary}</p>
-
-                    <span className={`project-card__hint${isExpanded ? ' project-card__hint--close' : ''}`}>
-                      {isExpanded ? 'Cliquer pour fermer' : 'Cliquer pour plus de détails'}
-                    </span>
-
-                    <div
-                      className={`project-card__details${isExpanded ? ' project-card__details--open' : ''}`}
-                      aria-hidden={!isExpanded}
-                    >
-                      <div className="project-card__details-inner">
-                        <p className="project-card__description">{p.description}</p>
-                        {p.highlights?.length > 0 && (
-                          <ul className="project-card__highlights">
-                            {p.highlights.map((item) => (
-                              <li key={item}>{item}</li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    </div>
-
-                    <ul className="project-card__tech">
-                      {p.tech.map((t) => (
-                        <li key={t}>{t}</li>
-                      ))}
-                    </ul>
-                  </button>
-
-                  {(p.github || p.live) && (
-                    <div className="project-card__links">
-                      {p.github && (
-                        <a
-                          href={p.github}
-                          className="project-card__link"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Code source — ${p.title}`}
-                        >
-                          <GithubIcon />
-                        </a>
-                      )}
-                      {p.live && (
-                        <a
-                          href={p.live}
-                          className="project-card__link"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Démo — ${p.title}`}
-                        >
-                          <ExternalIcon />
-                        </a>
-                      )}
-                    </div>
+      <ul className="projects__track" ref={trackRef}>
+        {PROJECTS.map((p) => {
+          const open = openId === p.id
+          return (
+            <li key={p.id} className={`pcard${open ? ' pcard--open' : ''}`}>
+              <div className="pcard__top">
+                <span className={`pcard__badge pcard__badge--${DOMAIN_CLASS[p.domain]}`}>{p.domain}</span>
+                {p.context !== 'EPITECH' && <span className="pcard__context">{p.context}</span>}
+                <span className="pcard__links">
+                  {p.github && (
+                    <a href={p.github} target="_blank" rel="noopener noreferrer" aria-label={`Code source de ${p.title} sur GitHub`}>
+                      <GithubIcon />
+                    </a>
                   )}
-                </article>
+                  {p.live && (
+                    <a href={p.live} target="_blank" rel="noopener noreferrer" aria-label={`Prototype de ${p.title}`}>
+                      <ExternalIcon />
+                    </a>
+                  )}
+                </span>
               </div>
-            )
-          })}
-        </div>
 
-        <aside
-          className="projects__reflection reveal"
-          aria-labelledby="projects-reflection-title"
-        >
-          <h3 id="projects-reflection-title" className="projects__reflection-title">
-            Réflexion sur mes travaux
-          </h3>
-          <div className="projects__reflection-body">
-            {REFLECTION_PARAGRAPHS.map((paragraph, idx) => (
-              <p key={idx} className="projects__reflection-text">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </aside>
+              <div className="pcard__body">
+                <h3 className="pcard__title">{p.title}</h3>
+                <p className="pcard__summary">{p.summary}</p>
+              </div>
+
+              {p.result && (
+                <p className="pcard__result">
+                  <strong>{p.result.value}</strong>
+                  <span>{p.result.label}</span>
+                </p>
+              )}
+
+              <div className="pcard__details" id={`pcard-${p.id}`} aria-hidden={!open}>
+                <div>
+                  <p>{p.description}</p>
+                  <ul className="pcard__highlights">
+                    {p.highlights.map((h) => <li key={h}>{h}</li>)}
+                  </ul>
+                </div>
+              </div>
+
+              <ul className="pcard__tech">
+                {p.tech.map((t) => <li key={t}>{t}</li>)}
+              </ul>
+
+              <button
+                type="button"
+                className="pcard__toggle"
+                aria-expanded={open}
+                aria-controls={`pcard-${p.id}`}
+                onClick={() => setOpenId(open ? null : p.id)}
+              >
+                {open ? 'Masquer le détail' : 'Voir le détail'}
+              </button>
+            </li>
+          )
+        })}
+      </ul>
+
+      <div className="container projects__reflection">
+        <h3 className="subhead">Réflexion sur mes travaux</h3>
+        {REFLECTION_PARAGRAPHS.map((text) => <p key={text}>{text}</p>)}
       </div>
     </section>
   )

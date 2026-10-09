@@ -5,8 +5,7 @@ const NAV_LINKS = [
   { href: '#about',       label: 'À propos' },
   { href: '#skills',      label: 'Compétences' },
   { href: '#projects',    label: 'Projets' },
-  { href: '#learning',    label: 'Apprentissage' },
-  { href: '#experiences', label: 'Expériences' },
+  { href: '#parcours',    label: 'Parcours' },
   { href: '#contact',     label: 'Contact' },
 ]
 
@@ -40,7 +39,7 @@ export default function Header() {
   return (
     <header className={`header${scrolled ? ' header--scrolled' : ''}`}>
       <nav className="nav container">
-        <a href="#home" className="nav__logo">Christophe.R</a>
+        <a href="#home" className="nav__logo">Christophe Rajaonarivony</a>
 
         <ul className={`nav__list${menuOpen ? ' nav__list--open' : ''}`}>
           {NAV_LINKS.map(({ href, label }) => (

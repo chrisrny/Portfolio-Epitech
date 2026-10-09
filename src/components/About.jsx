@@ -1,78 +1,60 @@
-import { useState } from 'react'
 import './About.css'
 import { site } from '../config/site'
 
-const META = [
-  { key: 'nom', val: site.fullName },
-  { key: 'école', val: 'EPITECH Mulhouse — Bachelor 2' },
-  { key: 'ville', val: site.city },
-  { key: 'statut', val: 'Disponible pour un stage', highlight: true },
+const FACTS = [
+  ['École', 'EPITECH Mulhouse, Bachelor 2'],
+  ['Spécialité', 'Data et IA'],
+  ['Ville', site.city],
+  ['Recherche', 'Un stage en data ou en IA'],
 ]
 
 export default function About() {
-  const [photoError, setPhotoError] = useState(false)
-  const showPlaceholder = !site.profileImage || photoError
-
   return (
     <section className="section" id="about">
-      <span className="section__watermark" aria-hidden="true">01</span>
-
       <div className="container">
-        <div className="section__header reveal">
-          <span className="section__tag">À propos</span>
-          <h2 className="section__title">Qui suis-je ?</h2>
-        </div>
+        <header className="section__head">
+          <h2 className="section__title">À propos</h2>
+        </header>
 
-        <div className="about__grid">
-          {/* Text */}
-          <div className="about__body">
-            <p className="about__bio reveal reveal--d2">
-              Mon parcours a commencé par une première année en Licence Maths/Informatique à l'UHA. Si j'y ai développé une vraie rigueur logique, j'avais un besoin de concret. C'est ce déclic qui m'a mené à EPITECH, où ma méthode d'apprentissage prend tout son sens à travers la réalisation de projets réels et concrets.
+        <div className="section__body about">
+          <div className="about__text">
+            <p>
+              Mon parcours a commencé par une première année de licence Maths-Informatique
+              à l'UHA. J'y ai gagné de la rigueur, mais il me manquait le concret. C'est ce
+              qui m'a amené à EPITECH, où l'on apprend en réalisant de vrais projets.
             </p>
-            <p className="about__bio reveal reveal--d3">
-              Aujourd'hui, après avoir exploré différents domaines de l'informatique — cybersécurité, développement web full-stack, UI/UX, data et IA —, je souhaite à terme me spécialiser en data et IA. J'ai notamment acquis de solides compétences en développement web et des bases solides en data et IA. Pour moi, un bon code doit avant tout résoudre un problème précis et apporter une vraie valeur.
+            <p>
+              J'ai exploré plusieurs domaines, du développement web à la cybersécurité, et
+              c'est la data et l'IA qui m'ont le plus accroché : je m'y suis spécialisé. Mes
+              compétences en développement web restent un atout, car elles me permettent de
+              transformer un modèle en outil que les gens peuvent vraiment utiliser.
+            </p>
+            <p>
+              Pour moi, un bon modèle commence par une bonne question et se juge sur ce qu'il
+              change concrètement.
             </p>
 
-            <div className="about__meta reveal reveal--d4">
-              {META.map(({ key, val, highlight }) => (
-                <div key={key} className="about__meta-row">
-                  <span className="about__meta-key">{key}</span>
-                  <span className={`about__meta-val${highlight ? ' about__meta-val--open' : ''}`}>
-                    {val}
-                  </span>
+            <dl className="about__facts">
+              {FACTS.map(([key, val]) => (
+                <div key={key}>
+                  <dt>{key}</dt>
+                  <dd>{val}</dd>
                 </div>
               ))}
-            </div>
+            </dl>
 
-            <a
-              href={site.cvFile}
-              className="btn btn--primary reveal reveal--d5"
-              download={site.cvDownloadFileName}
-            >
-              Télécharger mon CV →
+            <a href={site.cvFile} download={site.cvDownloadFileName} className="link">
+              Télécharger mon CV (PDF)
             </a>
           </div>
 
-          {/* Avatar */}
-          <div className="about__avatar-wrap reveal reveal--d1">
-            <div className="about__avatar">
-              <div className="about__avatar-grid" aria-hidden="true" />
-              {!showPlaceholder && (
-                <img
-                  src={site.profileImage}
-                  alt={`Portrait professionnel — ${site.fullName}`}
-                  className="about__avatar-photo"
-                  width={400}
-                  height={400}
-                  onError={() => setPhotoError(true)}
-                />
-              )}
-              {showPlaceholder && (
-                <span className="about__avatar-initials">{site.initials}</span>
-              )}
-            </div>
-            <div className="about__avatar-deco" aria-hidden="true" />
-          </div>
+          <img
+            src={site.profileImage}
+            alt={`Portrait de ${site.fullName}`}
+            className="about__photo"
+            width={400}
+            height={400}
+          />
         </div>
       </div>
     </section>

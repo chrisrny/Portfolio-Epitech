@@ -1,139 +1,92 @@
-/* =========================================
-   LES GROS BOUTONS DE CONTACT (À GAUCHE)
-========================================= */
-.contact__layout {
+.contact {
   display: grid;
-  /* C'est cette ligne qui fait la magie : 1 colonne pour les boutons, 1 colonne pour le formulaire */
-  grid-template-columns: 1fr 1fr; 
-  gap: 4rem; /* L'espace entre la gauche et la droite */
-  align-items: start; /* Aligne les deux blocs vers le haut */
+  gap: 3.5rem;
+  max-width: 40rem;
 }
 
-.contact__info {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.contact__email {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-weight: 500;
+  overflow-wrap: anywhere;
 }
 
-.contact__big-btn {
-  display: flex;
-  flex-direction: row; /* Aligne le texte et l'icône sur la même ligne */
-  justify-content: space-between; /* Pousse l'icône tout à droite */
-  align-items: center; /* Centre verticalement */
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 1.5rem 2rem;
-  border-radius: 12px;
-  text-decoration: none;
-  transition: background 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+.contact__list {
+  margin-top: 2rem;
+  border-top: 1px solid var(--rule);
 }
 
-.contact__big-btn:hover {
-  background: rgba(0, 0, 0, 0.4);
-  border-color: #6EBDB8;
-  transform: translateY(-4px);
+.contact__list div {
+  display: grid;
+  grid-template-columns: minmax(0, 7rem) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--rule);
 }
 
-.contact__big-btn-content {
-  display: flex;
-  flex-direction: column; /* Le titre et la description restent superposés */
+.contact__list dt {
+  color: var(--muted);
 }
 
-.contact__big-btn-title {
-  font-family: var(--font-code, monospace);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #6EBDB8;
-  margin-bottom: 0.5rem;
+.contact__list a:hover {
+  color: var(--accent);
 }
 
-.contact__big-btn-desc {
-  color: #fff;
-  font-size: 1rem;
-  word-break: break-all;
-  transition: color 0.2s ease;
+/* Formulaire */
+.contact__form {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
 }
 
-.contact__big-btn:hover .contact__big-btn-desc {
-  color: #f1f1f1;
+.contact__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  width: 100%;
 }
 
-/* --- Style de la nouvelle icône --- */
-.contact__big-btn-icon {
-  color: rgba(255, 255, 255, 0.2); /* Icône discrète par défaut */
-  display: flex;
-  transition: color 0.3s ease, transform 0.3s ease;
-  margin-left: 1rem; /* Assure un petit écart avec le texte */
+.field {
+  display: grid;
+  gap: 0.4rem;
+  width: 100%;
+  font-size: 0.95rem;
+  color: var(--muted);
 }
 
-.contact__big-btn:hover .contact__big-btn-icon {
-  color: #6EBDB8; /* S'allume avec ta couleur au survol ! */
-  transform: scale(1.1) rotate(5deg); /* Petit effet de pop très sympa */
-}
-.form-field {
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.form-label {
-  font-family: var(--font-code, monospace);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #6EBDB8; /* Ta couleur d'accentuation pour les titres */
-  margin-bottom: 0.5rem;
-}
-
-/* =========================================
-   LES CHAMPS DE TEXTE (Inputs)
-========================================= */
-.form-input {
-  /* Fond encore un peu plus sombre pour bien marquer la zone de texte */
-  background: rgba(0, 0, 0, 0.3); 
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-  padding: 0.8rem 1rem;
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  background: var(--raised);
+  border: 1px solid var(--rule);
   border-radius: 6px;
-  font-family: inherit;
+  color: var(--text);
+  font: inherit;
   font-size: 1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.2s ease;
 }
 
-/* Effet quand on clique dans le champ pour écrire */
-.form-input:focus {
+.field textarea {
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
   outline: none;
-  border-color: #6EBDB8;
-  box-shadow: 0 0 0 3px rgba(110, 189, 184, 0.15);
+  border-color: var(--accent);
 }
 
-.form-input--textarea {
-  min-height: 150px;
-  resize: vertical; /* Permet d'agrandir la zone de texte uniquement de haut en bas */
+.contact__status {
+  font-size: 0.95rem;
+  color: var(--accent);
 }
 
-.contact__form .btn {
-  margin-top: 1rem;
+.contact__status--error {
+  color: #F09A8E;
 }
 
-.form-status {
-  margin-top: 1rem;
-  color: #27c93f; /* Vert pour le succès */
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-.form-status--error {
-  color: #ff5f56;
-}
-
-/* =========================================
-   RESPONSIVE (Pour les téléphones)
-========================================= */
-@media (max-width: 768px) {
-  .contact__layout {
-    grid-template-columns: 1fr; /* Passe sur une seule colonne sur mobile */
-    gap: 2rem;
+@media (max-width: 520px) {
+  .contact__row {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
