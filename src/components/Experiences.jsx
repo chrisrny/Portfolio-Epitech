@@ -3,6 +3,14 @@ import './Experiences.css'
 const EXPERIENCES = [
   {
     num: '01',
+    icon: '💻',
+    title: 'Stage — Développeur web',
+    date: 'Août — Sept. 2026',
+    desc: "Stage en micro-entreprise (revente de luxe d'occasion) : création du site catalogue relié à Vinted et Vestiaire Collective, d'un back-office de suivi des ventes et de la facturation, avec un vrai client et de vraies contraintes.",
+    wip: false,
+  },
+  {
+    num: '02',
     icon: '🍔',
     title: 'Burger King — Équipier polyvalent',
     date: 'Mai 2026 — Présent',
@@ -10,7 +18,7 @@ const EXPERIENCES = [
     wip: false,
   },
   {
-    num: '02',
+    num: '03',
     icon: '🛍️',
     title: 'HEMA — Vendeur polyvalent',
     date: 'Mars — Sept. 2025',
@@ -29,7 +37,7 @@ export default function Experiences() {
           <span className="section__tag">Expériences</span>
           <h2 className="section__title">Au-delà<br />de l'école</h2>
           <p className="section__subtitle">
-            Activités, événements et implications en dehors des cours.
+            Mes expériences professionnelles en parallèle de mes études.
           </p>
         </div>
 

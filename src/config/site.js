@@ -3,7 +3,7 @@ export const site = {
 
   fullName: 'Christophe Rajaonarivony',
 
-  initials: 'CA',
+  initials: 'CR',
 
 
   city: 'Colmar',
@@ -18,5 +18,6 @@ export const site = {
 
   siteUrl: 'https://christopherajaonarivony.github.io/portfolio/',
 
-  linkedinUrl: '',
+  linkedinUrl: 'https://www.linkedin.com/in/christophe-rajaonarivony-8b7370353',
+  githubUrl: 'https://github.com/chrisrny',
 }

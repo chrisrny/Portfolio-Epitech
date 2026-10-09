@@ -124,6 +124,10 @@
   text-align: center;
 }
 
+.form-status--error {
+  color: #ff5f56;
+}
+
 /* =========================================
    RESPONSIVE (Pour les téléphones)
 ========================================= */

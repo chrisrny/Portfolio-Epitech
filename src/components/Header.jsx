@@ -17,7 +17,7 @@ export default function Header() {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
@@ -40,7 +40,7 @@ export default function Header() {
   return (
     <header className={`header${scrolled ? ' header--scrolled' : ''}`}>
       <nav className="nav container">
-        <a href="#home" className="nav__logo">Christophe.R </a>
+        <a href="#home" className="nav__logo">Christophe.R</a>
 
         <ul className={`nav__list${menuOpen ? ' nav__list--open' : ''}`}>
           {NAV_LINKS.map(({ href, label }) => (
@@ -59,7 +59,8 @@ export default function Header() {
         <button
           className={`nav__toggle${menuOpen ? ' nav__toggle--open' : ''}`}
           onClick={() => setMenuOpen((o) => !o)}
-          aria-label="Ouvrir le menu"
+          aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+          aria-expanded={menuOpen}
         >
           <span /><span /><span />
         </button>

@@ -11,12 +11,6 @@
   flex-wrap: wrap;
 }
 
-.footer__brand {
-  font-family: var(--font-code);
-  font-size: 0.8rem;
-  color: var(--accent);
-}
-
 .footer__copy {
   font-family: var(--font-code);
   font-size: 0.72rem;

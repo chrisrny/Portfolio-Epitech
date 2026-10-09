@@ -15,7 +15,7 @@
   background: linear-gradient(
     to bottom,
     var(--accent) 0%,
-    rgba(0, 255, 136, 0.15) 70%,
+    rgba(110, 189, 184, 0.15) 70%,
     transparent 100%
   );
 }
@@ -46,10 +46,10 @@
 
 @keyframes wip-pulse {
   0%, 100% {
-    box-shadow: 0 0 0 3px var(--bg-2), 0 0 8px rgba(0, 255, 136, 0.3);
+    box-shadow: 0 0 0 3px var(--bg-2), 0 0 8px rgba(110, 189, 184, 0.3);
   }
   50% {
-    box-shadow: 0 0 0 3px var(--bg-2), 0 0 20px rgba(0, 255, 136, 0.7);
+    box-shadow: 0 0 0 3px var(--bg-2), 0 0 20px rgba(110, 189, 184, 0.7);
   }
 }
 
@@ -112,7 +112,7 @@
   font-size: 0.68rem;
   color: var(--accent);
   background: var(--accent-dim);
-  border: 1px solid rgba(0, 255, 136, 0.2);
+  border: 1px solid rgba(110, 189, 184, 0.2);
   padding: 0.2rem 0.55rem;
   letter-spacing: 0.05em;
 }

@@ -7,6 +7,10 @@
   box-sizing: border-box;
 }
 
+ul {
+  list-style: none;
+}
+
 /* ─── Variables ──────────────────────────────────────── */
 :root {
   --c-bg:      #131B2E;
@@ -173,55 +177,6 @@ a {
   width: 100%;
 }
 
-/* ─── Marquee ────────────────────────────────────────── */
-.marquee-wrap {
-  background-color: var(--c-bg);
-  border-top: 1px solid rgba(61, 84, 112, 0.3);
-  border-bottom: 1px solid rgba(61, 84, 112, 0.3);
-  overflow: hidden;
-  padding: 1.4rem 0;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marqueeScroll 32s linear infinite;
-}
-
-.marquee-wrap:hover .marquee-track {
-  animation-play-state: paused;
-}
-
-.marquee-item {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.35);
-  white-space: nowrap;
-  padding: 0 2.2rem;
-  transition: color 0.25s ease;
-}
-
-.marquee-item:hover {
-  color: var(--c-teal);
-}
-
-.marquee-dot {
-  display: block;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--c-teal);
-  opacity: 0.5;
-  flex-shrink: 0;
-}
-
 /* ─── Scroll reveal ──────────────────────────────────── */
 .reveal {
   opacity: 0;
@@ -243,37 +198,10 @@ a {
 .reveal--d5 { transition-delay: 0.40s; }
 .reveal--d6 { transition-delay: 0.48s; }
 
-/* Alias AOS (utilisé dans App.jsx legacy — à migrer vers .reveal) */
-.aos {
-  opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.9s var(--ease-expo), transform 0.9s var(--ease-expo);
-}
-
-.aos.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* ─── Keyframes ──────────────────────────────────────── */
-@keyframes marqueeScroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes letterUp {
-  from { opacity: 0; transform: translateY(110%); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes expandLine {
-  from { width: 0; }
-  to   { width: 70px; }
 }
 
 @keyframes blink {
@@ -281,12 +209,18 @@ a {
   50%       { opacity: 0; }
 }
 
-@keyframes scrollPulse {
-  0%, 100% { transform: scaleY(1);   opacity: 1; }
-  50%       { transform: scaleY(0.8); opacity: 0.5; }
+/* ─── Accessibilité : mouvements réduits ─────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
 }
 
-@keyframes shiftGlow {
-  0%   { opacity: 0.6; transform: scale(1)    translateY(0); }
-  100% { opacity: 1;   transform: scale(1.08) translateY(-10px); }
+:focus-visible {
+  outline: 2px solid var(--c-teal);
+  outline-offset: 3px;
 }

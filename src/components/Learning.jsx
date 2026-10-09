@@ -9,18 +9,18 @@ const TIMELINE = [
     wip: false,
   },
   {
-    date: '2025 — EPITECH',
-    title: 'Bachelor Informatique',
-    text: 'Modules web, cybersécurité, bases de données, UX/UI et data/IA. Projets transverses : agrégateur d’offres, analyse e-commerce, NLP, chatbot métier et product design.',
+    date: '2025 — Aujourd’hui',
+    title: 'Bachelor Informatique — EPITECH',
+    text: 'Actuellement en 2e année. Modules web, cybersécurité, bases de données, UX/UI et data/IA. Projets transverses : agrégateur d’offres, analyse e-commerce, NLP, chatbot métier et product design.',
     skills: ['Python', 'React', 'Docker', 'ML'],
     wip: false,
   },
   {
-    date: 'Juin — Août 2026',
-    title: 'Stage en entreprise',
-    text: 'Recherche d’un stage d’un mois pour appliquer mes compétences en développement et data en contexte professionnel.',
-    skills: ['Stage', 'Fullstack', 'Data','Web','...'],
-    wip: true,
+    date: 'Août — Sept. 2026',
+    title: 'Stage — Développeur web',
+    text: 'Stage au sein d’une micro-entreprise de revente de luxe d’occasion : site catalogue relié à Vinted et Vestiaire Collective, back-office de suivi des ventes et facturation.',
+    skills: ['Next.js', 'TypeScript', 'Prisma', 'PostgreSQL'],
+    wip: false,
   },
 ]
 

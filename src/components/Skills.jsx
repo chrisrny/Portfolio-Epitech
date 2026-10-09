@@ -9,7 +9,7 @@ const CATEGORIES = [
   {
     filename: 'backend.ts',
     prompt: 'ls backend/',
-    skills: ['Node.js / Express', 'Python', 'PostgreSQL', 'MongoDB', 'API REST / JWT'],
+    skills: ['Node.js / Express', 'Python', 'Java (POO)', 'PostgreSQL / Prisma', 'MongoDB', 'API REST / JWT'],
   },
   {
     filename: 'tools.sh',
@@ -25,6 +25,7 @@ const CATEGORIES = [
       'Streamlit / Jupyter',
       'NLP / NLTK',
       'LLM & chatbots',
+      'Sécurité des LLM',
     ],
   },
 ]

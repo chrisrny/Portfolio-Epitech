@@ -9,7 +9,7 @@
 }
 
 .header--scrolled {
-  background: rgba(6, 6, 15, 0.84);
+  background: rgba(19, 27, 46, 0.84);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom-color: var(--border);
@@ -110,7 +110,7 @@
   .nav__list {
     position: fixed;
     inset: 72px 0 auto 0;
-    background: rgba(6, 6, 15, 0.97);
+    background: rgba(19, 27, 46, 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     flex-direction: column;

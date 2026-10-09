@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './Contact.css'
+import { site } from '../config/site'
 
 // ─── ICONES SVG ───
 const MailIcon = () => (
@@ -45,14 +46,14 @@ const CHANNELS = [
   {
     label: 'github',
     val: 'github.com/chrisrny',
-    href: 'https://github.com/chrisrny',
+    href: site.githubUrl,
     external: true,
     icon: <GithubIcon />,
   },
   {
     label: 'linkedin',
     val: 'linkedin.com/in/christophe-rajaonarivony',
-    href: 'www.linkedin.com/in/christophe-rajaonarivony-8b7370353',
+    href: site.linkedinUrl,
     external: true,
     icon: <LinkedinIcon />,
   },
@@ -60,7 +61,7 @@ const CHANNELS = [
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [status, setStatus] = useState('')
+  const [status, setStatus] = useState({ text: '', error: false })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (e) =>
@@ -69,7 +70,7 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setStatus('Envoi en cours...')
+    setStatus({ text: 'Envoi en cours…', error: false })
 
     // Récupération sécurisée de la clé depuis le fichier .env via Vite
     const formData = new FormData()
@@ -87,16 +88,16 @@ export default function Contact() {
       const data = await response.json()
 
       if (data.success) {
-        setStatus('Message reçu ! Je vous réponds dès que possible.')
+        setStatus({ text: 'Message reçu ! Je vous réponds dès que possible.', error: false })
         setForm({ name: '', email: '', message: '' })
       } else {
-        setStatus("Une erreur est survenue. Veuillez réessayer.")
+        setStatus({ text: "Une erreur est survenue. Veuillez réessayer.", error: true })
       }
-    } catch (error) {
-      setStatus("Impossible d'envoyer le message pour le moment.")
+    } catch {
+      setStatus({ text: "Impossible d'envoyer le message pour le moment.", error: true })
     } finally {
       setIsSubmitting(false)
-      setTimeout(() => setStatus(''), 6000)
+      setTimeout(() => setStatus({ text: '', error: false }), 6000)
     }
   }
 
@@ -109,7 +110,7 @@ export default function Contact() {
           <span className="section__tag">Contact</span>
           <h2 className="section__title">Parlons-en</h2>
           <p className="section__subtitle">
-            Un projet en tête ou envie de me contacter ? Envoyez-moi un message.
+            Une offre de stage, un projet ou une question ? Envoyez-moi un message.
           </p>
         </div>
 
@@ -138,7 +139,6 @@ export default function Contact() {
           <form
             className="contact__form reveal reveal--d2"
             onSubmit={handleSubmit}
-            noValidate
           >
             <div className="form-field">
               <label htmlFor="name" className="form-label">Nom</label>
@@ -188,7 +188,11 @@ export default function Contact() {
               {isSubmitting ? 'Envoi...' : 'Envoyer le message →'}
             </button>
 
-            {status && <p className="form-status">{status}</p>}
+            {status.text && (
+              <p className={`form-status${status.error ? ' form-status--error' : ''}`} role="status">
+                {status.text}
+              </p>
+            )}
           </form>
         </div>
       </div>

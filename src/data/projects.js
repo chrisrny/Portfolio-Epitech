@@ -1,9 +1,70 @@
-const EPITECH_ORG = 'https://github.com/EpitechBachelorPromo2028'
-
 export const PROJECTS = [
   {
+    id: 'stage-catalogue',
+    category: 'pro',
+    title: 'Catalogue & facturation',
+    summary: 'Site vitrine + back-office pour un revendeur de luxe d’occasion (stage).',
+    description:
+      "Réalisé en stage pour une micro-entreprise qui revend des vêtements de luxe sur Vinted et Vestiaire Collective : catalogue public qui redirige vers les annonces, back-office de saisie des articles, suivi des ventes et des marges, et génération de factures PDF.",
+    highlights: [
+      'Double vente impossible : contrainte unique en base + retrait auto de l’annonce Vestiaire',
+      'Facturation conforme : numérotation atomique, factures immuables, avoirs',
+      'Intégration API vendeur Vestiaire Collective, testée contre un faux serveur',
+    ],
+    tech: ['Next.js', 'TypeScript', 'Prisma', 'PostgreSQL', 'Tailwind', 'Cloudinary'],
+    github: null,
+    live: null,
+  },
+  {
+    id: 'cvrie',
+    category: 'school',
+    title: 'CVRIE — IA médicale',
+    summary: 'Classification de lésions de la peau et clustering de témoignages patients.',
+    description:
+      "IA médicale en machine learning classique : classification d'images dermatoscopiques du dataset HAM10000 (10 015 images, 7 diagnostics, fort déséquilibre de classes) et clustering non supervisé de témoignages de patients.",
+    highlights: [
+      'Split train/test par lésion pour éviter les fuites de données',
+      'Gestion d’un déséquilibre ×58 entre classes, choix de métriques adaptées',
+      'Partie non supervisée : regroupement de témoignages patients',
+    ],
+    tech: ['Python', 'Scikit-learn', 'Pandas', 'NumPy', 'Matplotlib', 'Jupyter'],
+    github: null,
+    live: null,
+  },
+  {
+    id: 'codename',
+    category: 'school',
+    title: 'Codename — sécurité LLM',
+    summary: 'Durcir un LLM local pour qu’il garde un secret face aux injections de prompt.',
+    description:
+      "Un LLM local (Ollama) doit protéger un mot de code et ne le révéler qu'avec le bon mot de passe. Itérations successives du prompt système (10 versions) testées contre des attaques par injection : autorité, encodage, injection indirecte, override et changement de persona.",
+    highlights: [
+      '5 familles d’attaques par injection de prompt',
+      '10 versions du Modelfile, paramètres déterministes pour comparer',
+      'Modèle Granite 3.1 MoE servi en local avec Ollama',
+    ],
+    tech: ['LLM', 'Ollama', 'Prompt engineering', 'Cybersécurité'],
+    github: null,
+    live: null,
+  },
+  {
+    id: '2dgame',
+    category: 'school',
+    title: '2D Game — roguelite',
+    summary: 'Action-roguelite en vue de dessus en Java avec libGDX (en cours).',
+    description:
+      "Jeu en binôme : trois salles d'ennemis, une relique à choisir après chaque salle, puis un boss en deux phases. Les règles du jeu vivent dans un module Java pur, séparé de l'affichage libGDX, ce qui permet de les tester sans ouvrir de fenêtre.",
+    highlights: [
+      'Séparation modèle / vue garantie par le build Gradle multi-modules',
+      'Design patterns : State, Strategy, Observer, Factory',
+      'Tests JUnit 5 + couverture JaCoCo, PR relues en binôme',
+    ],
+    tech: ['Java 21', 'libGDX', 'Gradle', 'JUnit', 'POO'],
+    github: null,
+    live: null,
+  },
+  {
     id: 'job-aggregator',
-    num: '01',
     category: 'school',
     title: 'Job Aggregator',
     summary: "Plateforme d'agrégation d'offres tech avec API WeLoveDevs et stack dockerisée.",
@@ -15,12 +76,11 @@ export const PROJECTS = [
       'CI GitHub Actions, tests API & accessibilité WCAG',
     ],
     tech: ['Next.js', 'TypeScript', 'Express', 'PostgreSQL', 'Docker', 'CI/CD'],
-    github: `https://github.com/chrisrny/Job-Aggregator-`,
+    github: 'https://github.com/chrisrny/Job-Aggregator-',
     live: null,
   },
   {
     id: 'nextbuy',
-    num: '02',
     category: 'school',
     title: 'NextBuy',
     summary: 'EDA e-commerce + 2 modèles ML et dashboard Streamlit de recommandations.',
@@ -37,7 +97,6 @@ export const PROJECTS = [
   },
   {
     id: 'tardis',
-    num: '03',
     category: 'school',
     title: 'TARDIS',
     summary: 'Prédiction des retards SNCF et dashboard Streamlit interactif.',
@@ -54,7 +113,6 @@ export const PROJECTS = [
   },
   {
     id: 'sneakr-eliza',
-    num: '04',
     category: 'school',
     title: 'SneakR — Eliza',
     summary: 'Chatbot Discord d’estimation de prix sneakers avec LLM local.',
@@ -71,7 +129,6 @@ export const PROJECTS = [
   },
   {
     id: 'bookworm',
-    num: '05',
     category: 'school',
     title: 'Alice in Wonderland',
     summary: 'CLI NLP — book cards à partir de livres Project Gutenberg.',
@@ -88,7 +145,6 @@ export const PROJECTS = [
   },
   {
     id: 'yowl',
-    num: '06',
     category: 'school',
     title: 'Yowl — Next Level',
     summary: 'Réseau social gaming : design Figma + MVP Next.js.',
@@ -107,7 +163,7 @@ export const PROJECTS = [
 ]
 
 export const REFLECTION_PARAGRAPHS = [
-  "Je présente des projets complémentaires : data & ML (NextBuy, TARDIS), plateforme fullstack produit (Job Aggregator), NLP (Bookworm), IA conversationnelle orientée business (SneakR) et conception UX→MVP (Yowl).",
+  "Je présente des projets complémentaires : un projet réel en stage (catalogue & facturation), data & ML (CVRIE, NextBuy, TARDIS), sécurité des LLM (Codename), jeu vidéo en Java (2D Game), plateforme fullstack (Job Aggregator), NLP (Bookworm), IA conversationnelle orientée business (SneakR) et conception UX→MVP (Yowl).",
   "Chaque projet documente des choix (stack, modèle, périmètre MVP), des limites assumées et répond à des problématiques concrètes ; c'est cette rigueur technique et ce sens produit que j'aime mettre en avant.",
-  "J'ai pu , nottament grâce à la methode d'enseignement EPITECH , m'éxercer sur ces projets à travers la pratique et l'apprentissage du travail d'équipe qui a été un élement crucial pour chacun de ces projets ."
+  "Grâce notamment à la pédagogie EPITECH, j'ai pu m'exercer sur ces projets par la pratique et apprendre à travailler en équipe, un élément crucial pour chacun d'entre eux.",
 ]
