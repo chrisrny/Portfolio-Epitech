@@ -11,7 +11,8 @@ const LAUNCH_MS = 420
 const CLOSE_MS = 320
 // Taille de dessin du MacBook (écran + bordures), mise à l'échelle de la fenêtre
 const MAC_W = 1060
-const MAC_H = 700
+// Hauteur totale : écran (640) + clavier vu en perspective (~150) + marge
+const MAC_H = 830
 
 // Dossier macOS aux couleurs du projet, avec son symbole gravé sur la face avant
 function Folder({ project, size = 76 }) {
