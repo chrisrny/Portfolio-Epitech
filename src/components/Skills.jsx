@@ -74,8 +74,11 @@ const NEIGHBOURS = EDGES.reduce((acc, { a, b }) => {
   return acc
 }, {})
 
-const REPEL_RADIUS = 120 // en unités du graphe
-const REPEL_FORCE = 26
+// Répulsion douce : rien dans la zone calme autour d'un nœud (on peut viser),
+// effet maximal à mi-distance, rien au-delà du rayon
+const REPEL_RADIUS = 110 // en unités du graphe
+const CALM_RADIUS = 45
+const REPEL_FORCE = 12
 
 export default function Skills() {
   const ref = useRef(null)
@@ -91,20 +94,21 @@ export default function Skills() {
     if (!graph || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
     const offsets = Object.fromEntries(NODES.map((n) => [n.id, { x: 0, y: 0 }]))
     let mouse = null
+    let frozen = false // curseur sur une techno : plus rien ne bouge
     let frame = 0
 
     const tick = () => {
       let moving = false
       NODES.forEach((n) => {
         const o = offsets[n.id]
-        let tx = 0
-        let ty = 0
-        if (mouse) {
+        let tx = frozen ? o.x : 0
+        let ty = frozen ? o.y : 0
+        if (mouse && !frozen) {
           const dx = n.x - mouse.x
           const dy = n.y - mouse.y
           const d = Math.hypot(dx, dy)
-          if (d < REPEL_RADIUS && d > 0.1) {
-            const push = ((REPEL_RADIUS - d) / REPEL_RADIUS) * REPEL_FORCE
+          if (d > CALM_RADIUS && d < REPEL_RADIUS) {
+            const push = Math.sin((Math.PI * (d - CALM_RADIUS)) / (REPEL_RADIUS - CALM_RADIUS)) * REPEL_FORCE
             tx = (dx / d) * push
             ty = (dy / d) * push
           }
@@ -130,12 +134,14 @@ export default function Skills() {
     }
 
     const onMove = (e) => {
+      frozen = !!e.target.closest('.snode')
       const r = graph.getBoundingClientRect()
       mouse = { x: ((e.clientX - r.left) / r.width) * W, y: ((e.clientY - r.top) / r.height) * H }
       if (!frame) frame = requestAnimationFrame(tick)
     }
     const onLeave = () => {
       mouse = null
+      frozen = false
       if (!frame) frame = requestAnimationFrame(tick)
     }
     graph.addEventListener('pointermove', onMove)
