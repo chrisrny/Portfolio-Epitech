@@ -23,16 +23,16 @@ const ALSO = 'Git et GitHub, Linux et Bash, SQL, CI/CD avec GitHub Actions, Noti
 
 // ── Graphe : grappes de technos, placées en ellipse autour d'une techno centrale ──
 const W = 1180
-const H = 540
+const H = 620
 
 const CLUSTERS = [
-  { id: 'ml', label: 'Data et ML', color: 'var(--accent)', hub: 'Python', cx: 300, cy: 290, rx: 205, ry: 150,
+  { id: 'ml', label: 'Data et ML', color: 'var(--accent)', hub: 'Python', cx: 290, cy: 330, rx: 225, ry: 180,
     members: ['Jupyter', 'pandas', 'scikit-learn', 'NumPy', 'Streamlit', 'Matplotlib', 'XGBoost', 'PyTorch', 'Gymnasium'] },
-  { id: 'nlp', label: 'NLP et LLM', color: 'var(--tertiary)', hub: 'LLM', cx: 700, cy: 150, rx: 175, ry: 95,
+  { id: 'nlp', label: 'NLP et LLM', color: 'var(--tertiary)', hub: 'LLM', cx: 740, cy: 145, rx: 230, ry: 105,
     members: ['Ollama', 'Prompt engineering', 'Sécurité', 'NLTK', 'NLP', 'Sentence Transformers', 'CLI', 'Discord', 'API REST'] },
-  { id: 'web', label: 'Web', color: 'var(--highlight)', hub: 'Next.js', cx: 920, cy: 390, rx: 165, ry: 105,
+  { id: 'web', label: 'Web', color: 'var(--highlight)', hub: 'Next.js', cx: 920, cy: 450, rx: 195, ry: 130,
     members: ['TypeScript', 'PostgreSQL', 'Express', 'FastAPI', 'Docker', 'Prisma', 'Tailwind', 'Jest', 'MongoDB', 'Figma'] },
-  { id: 'game', label: 'Jeu', color: '#8BE38B', hub: 'Java 21', cx: 610, cy: 450, rx: 85, ry: 45,
+  { id: 'game', label: 'Jeu', color: '#8BE38B', hub: 'Java 21', cx: 560, cy: 560, rx: 95, ry: 40,
     members: ['libGDX', 'Gradle', 'JUnit'] },
 ]
 
@@ -67,6 +67,22 @@ const EDGES = Object.values(
     return acc
   }, {}),
 )
+
+// Au repos, on n'affiche que la « colonne vertébrale » du graphe : un arbre couvrant
+// maximal (Kruskal) qui garde les liens les plus forts sans relier deux fois la même grappe.
+// Les autres liens n'apparaissent qu'au survol.
+{
+  const parent = Object.fromEntries(NODES.map((n) => [n.id, n.id]))
+  const find = (x) => (parent[x] === x ? x : (parent[x] = find(parent[x])))
+  const isHubLink = (e) => POS[e.a].cluster === POS[e.b].cluster && [e.a, e.b].includes(POS[e.a].cluster.hub)
+  ;[...EDGES]
+    .sort((x, y) => y.w - x.w || isHubLink(y) - isHubLink(x))
+    .forEach((e) => {
+      const ra = find(e.a)
+      const rb = find(e.b)
+      if (ra !== rb) { parent[ra] = rb; e.backbone = true }
+    })
+}
 
 const NEIGHBOURS = EDGES.reduce((acc, { a, b }) => {
   (acc[a] ??= new Set()).add(b);
@@ -175,7 +191,7 @@ export default function Skills() {
         <div>
           <h2 className="section__title">Compétences</h2>
           <p className="section__note">
-            Calculé à partir de mes projets : deux technos sont reliées quand je les ai utilisées ensemble.
+            Calculé à partir de mes projets. Survolez une techno pour voir toutes celles utilisées avec elle.
           </p>
         </div>
         <ul className="skills__legend" aria-hidden="true">
@@ -187,11 +203,11 @@ export default function Skills() {
       <div className="container skills__desktop">
         <div className={`sgraph${hovered ? ' sgraph--focus' : ''}`} ref={graphRef} onMouseLeave={() => setHovered(null)}>
           <svg className="sgraph__edges" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true">
-            {EDGES.map(({ a, b, w }, i) => {
+            {EDGES.map(({ a, b, w, backbone }, i) => {
               const on = hovered && (a === hovered || b === hovered)
               return (
                 <line key={`${a}|${b}`} ref={(el) => { lineRefs.current[i] = el }} x1={POS[a].x} y1={POS[a].y} x2={POS[b].x} y2={POS[b].y}
-                  className={on ? 'is-on' : ''}
+                  className={`${on ? 'is-on' : ''}${backbone ? ' is-backbone' : ''}`}
                   style={{ '--w': w, stroke: on ? POS[hovered].cluster.color : undefined }}
                   vectorEffect="non-scaling-stroke" />
               )

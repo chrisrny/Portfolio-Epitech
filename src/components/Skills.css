@@ -38,7 +38,7 @@
 .sgraph {
   position: relative;
   width: 100%;
-  aspect-ratio: 1180 / 540;
+  aspect-ratio: 1180 / 620;
 }
 
 .sgraph__edges {
@@ -57,12 +57,18 @@
 }
 
 .skills--shown .sgraph__edges line {
+  opacity: 0;
+}
+
+/* Au repos : seulement les liens les plus forts */
+.skills--shown .sgraph__edges line.is-backbone {
   opacity: 0.75;
   transition: opacity 1s ease 0.6s, stroke-width 0.3s ease;
 }
 
-.skills--shown .sgraph--focus .sgraph__edges line {
-  opacity: 0.08;
+.skills--shown .sgraph--focus .sgraph__edges line,
+.skills--shown .sgraph--focus .sgraph__edges line.is-backbone {
+  opacity: 0.06;
   transition: opacity 0.25s ease, stroke-width 0.25s ease;
 }
 
