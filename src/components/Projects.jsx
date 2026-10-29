@@ -8,6 +8,7 @@ export const FILTER_EVENT = 'projects:filter'
 
 const STEPS = ['Le problème', 'Ce que j’ai fait', 'Le résultat']
 const LAUNCH_MS = 420
+const CLOSE_MS = 320
 // Taille de dessin du MacBook (écran + bordures), mise à l'échelle de la fenêtre
 const MAC_W = 1060
 const MAC_H = 700
@@ -25,12 +26,12 @@ function Folder({ project, size = 76 }) {
   )
 }
 
-function ProjectWindow({ project, index, total, origin, onClose, onStep }) {
+function ProjectWindow({ project, index, total, origin, closing, onClose, onStep }) {
   const ref = useRef(null)
   useEffect(() => { ref.current?.focus() }, [project.id])
 
   return (
-    <div className="pwin-layer" style={{ transformOrigin: origin }}>
+    <div className={`pwin-layer${closing ? ' pwin-layer--closing' : ''}`} style={{ transformOrigin: origin }}>
       <div className="pwin" ref={ref} role="dialog" aria-modal="true" aria-label={project.title} tabIndex={-1}
         style={{ '--theme': project.color }}>
         <div className="pwin__bar">
@@ -96,6 +97,8 @@ export default function Projects() {
   const timer = useRef(0)
   const [openId, setOpenId] = useState(null)
   const [launching, setLaunching] = useState(null)
+  const [closing, setClosing] = useState(false)
+  const [landing, setLanding] = useState(null)
   const [origin, setOrigin] = useState('50% 50%')
   const [tech, setTech] = useState(null)
   const [interacted, setInteracted] = useState(false)
@@ -150,10 +153,30 @@ export default function Projects() {
 
   useEffect(() => () => clearTimeout(timer.current), [])
 
+  // Position d'une icône dans l'écran, en %, pour ouvrir / refermer la fenêtre vers elle
+  const originOf = (id) => {
+    const screen = screenRef.current
+    const icon = iconRefs.current[id]
+    if (!screen || !icon) return '50% 50%'
+    const box = screen.getBoundingClientRect()
+    const r = icon.getBoundingClientRect()
+    return `${((r.left + r.width / 2 - box.left) / box.width) * 100}% ${((r.top + r.height / 2 - box.top) / box.height) * 100}%`
+  }
+
+  // Fermeture : la fenêtre retourne dans son dossier, qui rebondit en la recevant
   const close = () => {
+    if (!openId || closing) return
     const id = openId
-    setOpenId(null)
-    iconRefs.current[id]?.focus()
+    setOrigin(originOf(id))
+    setClosing(true)
+    clearTimeout(timer.current)
+    timer.current = setTimeout(() => {
+      setOpenId(null)
+      setClosing(false)
+      setLanding(id)
+      iconRefs.current[id]?.focus()
+      timer.current = setTimeout(() => setLanding(null), 400)
+    }, CLOSE_MS)
   }
 
   // Échap ferme la fenêtre
@@ -162,17 +185,12 @@ export default function Projects() {
     const onKey = (e) => { if (e.key === 'Escape') close() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [openId])
+  }, [openId, closing])
 
   const launch = (p) => {
     setInteracted(true)
-    const screen = screenRef.current
-    const icon = iconRefs.current[p.id]
-    if (screen && icon) {
-      const box = screen.getBoundingClientRect()
-      const r = icon.getBoundingClientRect()
-      setOrigin(`${((r.left + r.width / 2 - box.left) / box.width) * 100}% ${((r.top + r.height / 2 - box.top) / box.height) * 100}%`)
-    }
+    setOrigin(originOf(p.id))
+    setClosing(false)
     // On termine le zoom si le Mac n'est pas encore face au visiteur
     const stage = stageRef.current
     if (window.innerWidth > 900 && Number(stage.style.getPropertyValue('--p')) < 1) {
@@ -215,7 +233,7 @@ export default function Projects() {
                         <button
                           type="button"
                           ref={(el) => { iconRefs.current[p.id] = el }}
-                          className={`app${p.id === launching ? ' app--launch' : ''}${p.id === openId ? ' app--open' : ''}${dim ? ' app--dim' : ''}`}
+                          className={`app${p.id === launching ? ' app--launch' : ''}${p.id === landing ? ' app--land' : ''}${p.id === openId ? ' app--open' : ''}${dim ? ' app--dim' : ''}`}
                           style={{ '--theme': p.color }}
                           onClick={() => launch(p)}
                           aria-label={`Ouvrir ${p.title}`}
@@ -241,9 +259,9 @@ export default function Projects() {
 
                 {project && (
                   <>
-                    <div className="pwin-backdrop" onClick={close} />
+                    <div className={`pwin-backdrop${closing ? ' pwin-backdrop--closing' : ''}`} onClick={close} />
                     <ProjectWindow project={project} index={index} total={PROJECTS.length}
-                      origin={origin} onClose={close} onStep={step} />
+                      origin={origin} closing={closing} onClose={close} onStep={step} />
                   </>
                 )}
               </div>
