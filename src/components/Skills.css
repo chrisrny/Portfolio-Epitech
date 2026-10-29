@@ -1,3 +1,158 @@
+/* Section pleine largeur : le graphe a besoin de place */
+.section.skills > .container {
+  display: block;
+}
+
+.section.skills > .skills__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.skills__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+
+.skills__legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.skills__legend li::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+/* ── Graphe ── */
+.sgraph {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1180 / 540;
+}
+
+.sgraph__edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.sgraph__edges line {
+  stroke: var(--rule-hover);
+  stroke-width: calc(0.6px + var(--w) * 0.5px);
+  opacity: 0;
+  transition: opacity 0.3s ease, stroke-width 0.3s ease;
+}
+
+.skills--shown .sgraph__edges line {
+  opacity: 0.5;
+  transition: opacity 1s ease 0.6s, stroke-width 0.3s ease;
+}
+
+.skills--shown .sgraph--focus .sgraph__edges line {
+  opacity: 0.08;
+  transition: opacity 0.25s ease, stroke-width 0.25s ease;
+}
+
+.skills--shown .sgraph--focus .sgraph__edges line.is-on {
+  opacity: 0.9;
+  stroke-width: calc(1px + var(--w) * 1px);
+}
+
+.snode {
+  position: absolute;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition: opacity 0.25s ease;
+}
+
+.snode__dot {
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 0 0 transparent;
+  transform: scale(0);
+  transition: transform 0.6s var(--ease-out), box-shadow 0.25s ease;
+  transition-delay: calc(var(--i) * 25ms), 0s;
+}
+
+.skills--shown .snode__dot {
+  transform: scale(1);
+}
+
+.snode__label {
+  font-size: 13px;
+  white-space: nowrap;
+  text-shadow: 0 1px 3px var(--bg), 0 0 6px var(--bg);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  transition-delay: calc(0.3s + var(--i) * 25ms);
+}
+
+.skills--shown .snode__label {
+  opacity: 1;
+}
+
+.snode--major .snode__label {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* Survol : la techno et ses voisines s'allument, le reste s'estompe */
+.sgraph--focus .snode:not(.snode--lit) {
+  opacity: 0.2;
+}
+
+.snode--current .snode__dot {
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--c) 30%, transparent);
+}
+
+.sgraph__info {
+  min-height: 1.6em;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.95rem;
+  color: var(--text-2);
+}
+
+.sgraph__info strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.skills__desktop .sonce__also {
+  margin-top: 0.5rem;
+}
+
+.section.skills > .skills__mobile {
+  display: none;
+}
+
 .sbars {
   display: grid;
   gap: 0.15rem;
@@ -114,5 +269,17 @@
   .sbars__row {
     grid-template-columns: minmax(0, 7rem) minmax(0, 1fr) 1.5rem;
     gap: 0.75rem;
+  }
+}
+
+/* Mobile : le graphe serait illisible, on garde la liste en barres */
+@media (max-width: 760px) {
+  .skills__legend,
+  .section.skills > .skills__desktop {
+    display: none;
+  }
+
+  .section.skills > .skills__mobile {
+    display: block;
   }
 }
