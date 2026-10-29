@@ -12,11 +12,15 @@ const LAUNCH_MS = 420
 const MAC_W = 1060
 const MAC_H = 700
 
-function Icon({ project, size = 34 }) {
+// Dossier macOS aux couleurs du projet, avec son symbole gravé sur la face avant
+function Folder({ project, size = 76 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" strokeWidth="1.6"
-      strokeLinecap="round" strokeLinejoin="round" style={{ stroke: project.color }} aria-hidden="true">
-      <path d={project.icon} />
+    <svg className="folder" width={size} height={size * 0.8} viewBox="0 0 80 64" aria-hidden="true"
+      style={{ '--theme': project.color }}>
+      <path className="folder__back" d="M6 8a4 4 0 0 1 4-4h19.5a4 4 0 0 1 2.8 1.2L37 10h33a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4z" />
+      <rect className="folder__front" x="3" y="17" width="74" height="45" rx="5" />
+      <rect className="folder__shine" x="3" y="17" width="74" height="3" rx="1.5" />
+      <path className="folder__glyph" d={project.icon} transform="translate(28 28)" />
     </svg>
   )
 }
@@ -40,7 +44,7 @@ function ProjectWindow({ project, index, total, origin, onClose, onStep }) {
 
         <div className="pwin__scroll" key={project.id}>
           <header className="pwin__banner">
-            <span className="app-tile app-tile--lg"><Icon project={project} size={38} /></span>
+            <Folder project={project} size={86} />
             <div className="pwin__heading">
               <h3 className="pwin__title">{project.title}</h3>
               <p className="pwin__meta">
@@ -216,7 +220,7 @@ export default function Projects() {
                           onClick={() => launch(p)}
                           aria-label={`Ouvrir ${p.title}`}
                         >
-                          <span className="app-tile"><Icon project={p} /></span>
+                          <span className="app__icon"><Folder project={p} /></span>
                           <span className="app__name">{p.title}</span>
                         </button>
                       </li>
