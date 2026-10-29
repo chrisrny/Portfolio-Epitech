@@ -19,7 +19,7 @@ const ONCE = USAGE.filter((u) => u.projects.length === 1)
 const MAX = MAIN[0]?.projects.length ?? 1
 
 // Outils utilisés au quotidien mais qui n'apparaissent pas dans les fiches projets
-const ALSO = 'Git et GitHub, Linux et Bash, SQL, CI/CD avec GitHub Actions'
+const ALSO = 'Git et GitHub, Linux et Bash, SQL, CI/CD avec GitHub Actions, Notion, Trello'
 
 // ── Graphe : grappes de technos, placées en ellipse autour d'une techno centrale ──
 const W = 1180
@@ -29,9 +29,9 @@ const CLUSTERS = [
   { id: 'ml', label: 'Data et ML', color: 'var(--accent)', hub: 'Python', cx: 300, cy: 290, rx: 205, ry: 150,
     members: ['Jupyter', 'pandas', 'scikit-learn', 'NumPy', 'Streamlit', 'Matplotlib', 'XGBoost', 'PyTorch', 'Gymnasium'] },
   { id: 'nlp', label: 'NLP et LLM', color: 'var(--tertiary)', hub: 'LLM', cx: 700, cy: 150, rx: 175, ry: 95,
-    members: ['Ollama', 'Prompt engineering', 'Sécurité', 'NLTK', 'NLP', 'CLI', 'Discord', 'API REST'] },
+    members: ['Ollama', 'Prompt engineering', 'Sécurité', 'NLTK', 'NLP', 'Sentence Transformers', 'CLI', 'Discord', 'API REST'] },
   { id: 'web', label: 'Web', color: 'var(--highlight)', hub: 'Next.js', cx: 920, cy: 390, rx: 165, ry: 105,
-    members: ['TypeScript', 'PostgreSQL', 'Express', 'Docker', 'Prisma', 'Tailwind', 'MongoDB', 'Figma'] },
+    members: ['TypeScript', 'PostgreSQL', 'Express', 'FastAPI', 'Docker', 'Prisma', 'Tailwind', 'Jest', 'MongoDB', 'Figma'] },
   { id: 'game', label: 'Jeu', color: '#8BE38B', hub: 'Java 21', cx: 610, cy: 450, rx: 85, ry: 45,
     members: ['libGDX', 'Gradle', 'JUnit'] },
 ]
