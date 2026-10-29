@@ -1,7 +1,6 @@
 import './Hero.css'
 import { site } from '../config/site'
 import { PROJECTS } from '../data/projects'
-import DataField from './DataField'
 
 const FEATURED = PROJECTS.slice(0, 3)
 
@@ -10,8 +9,6 @@ export default function Hero() {
 
   return (
     <section className="hero" id="home">
-      <DataField />
-      <p className="hero__caption" aria-hidden="true">k-means (k = 3) calculé en direct dans votre navigateur</p>
       <div className="container hero__inner">
         <div className="hero__intro">
           <h1 className="hero__name">

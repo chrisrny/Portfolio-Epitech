@@ -116,7 +116,9 @@ export default function Projects() {
       frame = 0
       const rect = stage.getBoundingClientRect()
       const range = rect.height - window.innerHeight
-      const p = reduced ? 1 : Math.min(1, Math.max(0, -rect.top / Math.max(range, 1)))
+      // Le zoom commence dès que le Mac entre dans l'écran (haut de la scène à 80 % de la hauteur)
+      const lead = window.innerHeight * 0.8
+      const p = reduced ? 1 : Math.min(1, Math.max(0, (lead - rect.top) / Math.max(range + lead, 1)))
       // La barre de navigation fixe (72 px) est retirée de la hauteur disponible
       const fit = Math.min((window.innerWidth * 0.94) / MAC_W, ((window.innerHeight - 72) * 0.92) / MAC_H)
       stage.style.setProperty('--p', p.toFixed(3))
