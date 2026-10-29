@@ -45,7 +45,10 @@ html {
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  /* Papier millimétré : une grille de points très discrète */
+  background-image: radial-gradient(circle, rgba(236, 233, 245, 0.05) 1px, transparent 1.5px);
+  background-size: 28px 28px;
   color: var(--text);
   font-family: var(--font);
   font-size: 1.0625rem;

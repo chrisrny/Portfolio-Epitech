@@ -1,0 +1,278 @@
+/* Section pleine largeur, comme Projets */
+.section.showcase > .container {
+  display: block;
+}
+
+.section.showcase > .showcase__head {
+  margin-bottom: 2.5rem;
+}
+
+.section.showcase > .showcase__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto auto;
+  gap: 1.5rem;
+}
+
+/* ── Tuiles ── */
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.75rem;
+  background: var(--raised);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+}
+
+.tile--main {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+}
+
+.tile--side {
+  grid-column: 3;
+}
+
+.tile--number {
+  grid-column: 3;
+  justify-content: flex-end;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(242, 194, 125, 0.12), transparent 60%),
+    var(--raised);
+}
+
+.tile__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+
+.tile__title {
+  font-family: var(--display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.tile__result {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.tile__result strong {
+  font-family: var(--display);
+  font-size: 1.5rem;
+  color: var(--highlight);
+  margin-right: 0.25rem;
+}
+
+.tile__summary {
+  color: var(--text-2);
+  max-width: 40rem;
+}
+
+.tile__caption {
+  margin-top: auto;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.tile__big {
+  font-family: var(--display);
+  font-size: clamp(3.5rem, 6vw, 5.5rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--highlight);
+  margin-bottom: 0.75rem;
+}
+
+/* ── Courbe d'apprentissage ── */
+.chart {
+  width: 100%;
+  height: auto;
+  margin: 0.75rem 0 0.5rem;
+  overflow: visible;
+}
+
+.chart__grid {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.chart__tick {
+  fill: var(--muted);
+  font-size: 12px;
+  font-family: var(--font);
+}
+
+.chart__goal {
+  stroke: var(--highlight);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+}
+
+.chart__baseline {
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.chart__label {
+  fill: var(--muted);
+  font-size: 12px;
+  font-family: var(--font);
+}
+
+.chart__label--goal {
+  fill: var(--highlight);
+}
+
+.chart__line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 2.2s var(--ease-out);
+}
+
+.chart__dot {
+  fill: var(--bg);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0;
+  transition: opacity 0.6s ease 1.8s;
+}
+
+.showcase--shown .chart__line {
+  stroke-dashoffset: 0;
+}
+
+.showcase--shown .chart__dot {
+  opacity: 1;
+}
+
+/* ── Barres CVRIE ── */
+.bars {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0.75rem 0 0.25rem;
+}
+
+.bars__legend {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.bars__key::before {
+  content: '';
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-right: 0.4rem;
+  border-radius: 2px;
+  vertical-align: -0.05rem;
+}
+
+.bars__key--recall::before { background: var(--accent); }
+.bars__key--f1::before     { background: var(--rule-hover); }
+
+.bars__row {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.bars__label {
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+
+.bars__label em {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--highlight);
+}
+
+.bars__pair {
+  display: grid;
+  gap: 3px;
+}
+
+.bars__bar {
+  position: relative;
+  height: 0.9rem;
+  width: calc(var(--v) * 100%);
+  border-radius: 0 3px 3px 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.bars__bar b {
+  position: absolute;
+  left: calc(100% + 0.4rem);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.bars__bar--recall { background: var(--accent); opacity: 0.55; }
+.bars__bar--f1     { background: var(--rule-hover); }
+
+.bars__row--chosen .bars__bar--recall {
+  opacity: 1;
+}
+
+.bars__row--chosen .bars__bar--recall b {
+  color: var(--accent);
+}
+
+.showcase--shown .bars__bar {
+  transform: scaleX(1);
+}
+
+@media (max-width: 1000px) {
+  .section.showcase > .showcase__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tile--main {
+    grid-column: 1 / 3;
+    grid-row: auto;
+  }
+
+  .tile--side,
+  .tile--number {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .section.showcase > .showcase__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tile--main {
+    grid-column: auto;
+  }
+
+  .tile {
+    padding: 1.5rem;
+  }
+
+  /* Le graphique est réduit de moitié : on grossit le texte d'autant */
+  .chart__tick,
+  .chart__label {
+    font-size: 22px;
+  }
+}

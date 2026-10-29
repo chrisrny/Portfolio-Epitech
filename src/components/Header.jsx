@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './Header.css'
 
 const NAV_LINKS = [
+  { href: '#data',        label: 'Data & IA' },
   { href: '#about',       label: 'À propos' },
   { href: '#skills',      label: 'Compétences' },
   { href: '#projects',    label: 'Projets' },

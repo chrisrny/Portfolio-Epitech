@@ -1,6 +1,7 @@
 import './Hero.css'
 import { site } from '../config/site'
 import { PROJECTS } from '../data/projects'
+import DataField from './DataField'
 
 const FEATURED = PROJECTS.slice(0, 3)
 
@@ -9,6 +10,8 @@ export default function Hero() {
 
   return (
     <section className="hero" id="home">
+      <DataField />
+      <p className="hero__caption" aria-hidden="true">k-means (k = 3) calculé en direct dans votre navigateur</p>
       <div className="container hero__inner">
         <div className="hero__intro">
           <h1 className="hero__name">
@@ -38,7 +41,7 @@ export default function Hero() {
           <ul>
             {FEATURED.map((p) => (
               <li key={p.id}>
-                <a href="#projects" className="hero__row">
+                <a href="#data" className="hero__row">
                   <span className="hero__row-text">
                     <span className="hero__row-name">{p.title}</span>
                     <span className="hero__row-summary">{p.summary}</span>

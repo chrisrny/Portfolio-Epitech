@@ -2,6 +2,24 @@
 // `result` : uniquement un chiffre réellement mesuré dans le projet.
 export const PROJECTS = [
   {
+    id: 'starttrek',
+    domain: 'Data & IA',
+    context: 'EPITECH',
+    title: 'Start Trek',
+    summary: 'Deux agents d’apprentissage par renforcement qui apprennent à poser un module lunaire.',
+    result: { value: '97 %', label: 'd’atterrissages réussis' },
+    description:
+      "Apprentissage par renforcement sur LunarLander (Gymnasium) : un agent DQN et un agent PPO codés en PyTorch, entraînés à poser le module sans casse. Objectif : un score moyen d'au moins 200. Un agent qui joue au hasard fait -192 et se crashe dans 92 % des cas.",
+    highlights: [
+      'DQN de zéro : replay buffer, réseau cible, exploration epsilon-greedy décroissante',
+      'Réglage un paramètre à la fois, sur 2 seeds : la config retenue (batch 128, réseau 256×256) atteint 268 ± 7 de score moyen',
+      'PPO avec environnements parallèles et GAE, jusqu’à 259 en évaluation ; comparaison des deux approches',
+    ],
+    tech: ['Python', 'PyTorch', 'Gymnasium', 'NumPy', 'Jupyter'],
+    github: null,
+    live: null,
+  },
+  {
     id: 'cvrie',
     domain: 'Data & IA',
     context: 'EPITECH',
@@ -185,7 +203,7 @@ export const PROJECTS = [
 ]
 
 export const REFLECTION_PARAGRAPHS = [
-  "Mes projets suivent le chemin de la donnée : la nettoyer et l'explorer (NextBuy, TARDIS), entraîner et évaluer des modèles (CVRIE), travailler le texte et les LLM (Bookworm, SneakR, Codename), puis rendre le résultat utilisable dans une vraie application (Job Aggregator, mon stage).",
+  "Mes projets suivent le chemin de la donnée : la nettoyer et l'explorer (NextBuy, TARDIS), entraîner et évaluer des modèles (CVRIE, Start Trek), travailler le texte et les LLM (Bookworm, SneakR, Codename), puis rendre le résultat utilisable dans une vraie application (Job Aggregator, mon stage).",
   "Ce que j'ai appris de plus utile, c'est de me méfier d'un bon score : sur CVRIE, une fuite de données gonflait les résultats, et le meilleur modèle sur le papier n'était pas le bon pour un usage médical. Chaque projet documente ses choix et ses limites.",
   "Grâce à la pédagogie EPITECH, j'ai appris par la pratique et en équipe, un élément essentiel de chacun de ces projets.",
 ]
