@@ -58,9 +58,7 @@
   flex-direction: column;
   overflow: hidden;
   border-radius: 6px;
-  background-color: #0B1120;
-  background-image: radial-gradient(circle, rgba(232, 238, 246, 0.07) 1px, transparent 1.5px);
-  background-size: 22px 22px;
+  background: radial-gradient(120% 90% at 30% 0%, #13203A 0%, #0B1120 60%);
 }
 
 .mac__base {
@@ -293,8 +291,10 @@
 
 .pwin-layer {
   position: absolute;
-  inset: 26px 0 0;
+  inset: 0;
   z-index: 5;
+  /* Même repère que l'écran (pour viser pile le dossier), fenêtre centrée sous la barre de menu */
+  padding-top: 26px;
   display: flex;
   align-items: center;
   justify-content: center;

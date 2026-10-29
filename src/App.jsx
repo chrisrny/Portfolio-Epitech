@@ -7,10 +7,12 @@ import Projects from './components/Projects'
 import Parcours from './components/Parcours'
 import Contact  from './components/Contact'
 import Footer   from './components/Footer'
+import Contours from './components/Contours'
 
 export default function App() {
   return (
     <>
+      <Contours />
       <Header />
       <main>
         <Hero />

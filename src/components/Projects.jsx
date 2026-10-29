@@ -174,7 +174,7 @@ export default function Projects() {
       setOpenId(null)
       setClosing(false)
       setLanding(id)
-      iconRefs.current[id]?.focus()
+      iconRefs.current[id]?.focus({ preventScroll: true })
       timer.current = setTimeout(() => setLanding(null), 400)
     }, CLOSE_MS)
   }
