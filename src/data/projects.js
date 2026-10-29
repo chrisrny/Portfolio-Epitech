@@ -1,8 +1,17 @@
 // Ordre = ordre d'affichage. Les 3 premiers sont mis en avant dans le Hero.
 // `result` : uniquement un chiffre réellement mesuré dans le projet.
+// `color` / `icon` : univers du projet (icône = tracé SVG 24×24).
 export const PROJECTS = [
   {
     id: 'starttrek',
+    color: '#B9A2FF',
+    icon: 'M9 3h6l2 5H7z M8 8l-3 6 M16 8l3 6 M4 14h3 M17 14h3 M12 11v4 M10 18l2 3 2-3',
+    // Le problème, ce que j’ai fait, le résultat
+    story: [
+      "Poser un module lunaire sans casse, avec un score moyen d’au moins 200. Un agent qui joue au hasard fait -192.",
+      "Un DQN codé de zéro (replay buffer, réseau cible) puis un PPO. Réglage d’un paramètre à la fois, sur 2 seeds.",
+      "268 ± 7 de score moyen et 97 % d’atterrissages réussis avec la configuration retenue.",
+    ],
     domain: 'Data & IA',
     context: 'EPITECH',
     title: 'Start Trek',
@@ -21,6 +30,14 @@ export const PROJECTS = [
   },
   {
     id: 'cvrie',
+    color: '#F28BA8',
+    icon: 'M10 4a6 6 0 1 1 0 12a6 6 0 1 1 0-12z M14.5 14.5L20 20 M8 9h.01 M12 8.5h.01 M10.5 12h.01',
+    // Le problème, ce que j’ai fait, le résultat
+    story: [
+      "Reconnaître 7 diagnostics sur 10 015 images de peau, avec 58 fois plus de grains de beauté que de lésions rares.",
+      "Repérage d’une fuite de données (split par lésion), PCA et SVC, puis comparaison de 5 variantes.",
+      "Le modèle qui rate le moins de mélanomes : 0,64 de rappel, choisi plutôt que le meilleur score global.",
+    ],
     domain: 'Data & IA',
     context: 'EPITECH',
     title: 'CVRIE',
@@ -39,6 +56,14 @@ export const PROJECTS = [
   },
   {
     id: 'nextbuy',
+    color: '#F2C27D',
+    icon: 'M3 4h2l2.5 11h10L20 8H6.5 M9 19.5h.01 M17 19.5h.01',
+    // Le problème, ce que j’ai fait, le résultat
+    story: [
+      "Comprendre et anticiper les commandes des clients d’Instacart.",
+      "8 questions business en visualisations, un Random Forest pour le réachat et un XGBoost pour le délai.",
+      "Un R² de 0,96 sur le délai avant la prochaine commande, exposé dans un dashboard Streamlit.",
+    ],
     domain: 'Data & IA',
     context: 'EPITECH',
     title: 'NextBuy',
@@ -57,6 +82,14 @@ export const PROJECTS = [
   },
   {
     id: 'tardis',
+    color: '#FFC83D',
+    icon: 'M7 3h10a2 2 0 0 1 2 2v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V5a2 2 0 0 1 2-2z M5 10h14 M9 14h.01 M15 14h.01 M8 17l-2 4 M16 17l2 4',
+    // Le problème, ce que j’ai fait, le résultat
+    story: [
+      "Anticiper les retards des TGV et Intercités.",
+      "Nettoyage des données open data SNCF, plus de 11 variables construites, Random Forest avec validation croisée.",
+      "Un dashboard qui estime un retard selon la gare de départ, d’arrivée et le mois.",
+    ],
     domain: 'Data & IA',
     context: 'EPITECH',
     title: 'TARDIS',
@@ -75,6 +108,14 @@ export const PROJECTS = [
   },
   {
     id: 'codename',
+    color: '#7EE787',
+    icon: 'M6 11h12v9H6z M8 11V8a4 4 0 0 1 8 0v3 M12 15v2',
+    // Le problème, ce que j’ai fait, le résultat
+    story: [
+      "Empêcher un LLM local de révéler un mot de code sans le bon mot de passe.",
+      "10 versions du prompt système, des paramètres déterministes pour comparer, 5 familles d’attaques.",
+      "Un Modelfile testé contre l’autorité, l’encodage, l’injection indirecte, l’override et le changement de persona.",
+    ],
     domain: 'Data & IA',
     context: 'EPITECH',
     title: 'Codename',
@@ -93,6 +134,14 @@ export const PROJECTS = [
   },
   {
     id: 'bookworm',
+    color: '#E3C79B',
+    icon: 'M3 5c3-1 6-1 9 1c3-2 6-2 9-1v14c-3-1-6-1-9 1c-3-2-6-2-9-1z M12 6v14',
+    // Le problème, ce que j’ai fait, le résultat
+    story: [
+      "Analyser automatiquement un livre entier du Project Gutenberg.",
+      "NLTK pour la diversité lexicale, les thèmes, les personnages et les lieux, puis une similarité cosinus.",
+      "Une commande qui génère une fiche de lecture et compare le livre à 20 œuvres de référence.",
+    ],
     domain: 'Data & IA',
     context: 'EPITECH',
     title: 'Bookworm',
@@ -111,6 +160,14 @@ export const PROJECTS = [
   },
   {
     id: 'sneakr',
+    color: '#5865F2',
+    icon: 'M3 15l2-7 4 2 3 3 6 1c2 0 3 1 3 3H3z M3 18h18',
+    // Le problème, ce que j’ai fait, le résultat
+    story: [
+      "Aider les revendeurs à estimer le prix d’une paire de sneakers.",
+      "Prix du marché via l’API Kicks.dev, grille d’état de 1 à 6, LLM local Llama 3.1.",
+      "Un bot Discord, avec un cadrage business (KPI, ROI) et une analyse éthique.",
+    ],
     domain: 'Data & IA',
     context: 'EPITECH',
     title: 'SneakR',
@@ -129,6 +186,14 @@ export const PROJECTS = [
   },
   {
     id: 'stage-catalogue',
+    color: '#D9C29C',
+    icon: 'M12 6a2 2 0 1 1 2 2c-1 0-2 1-2 2 M12 10l-9 7h18z',
+    // Le problème, ce que j’ai fait, le résultat
+    story: [
+      "Un revendeur de luxe vend les mêmes pièces sur Vinted et sur Vestiaire Collective.",
+      "Un catalogue Next.js, un back-office, l’API Vestiaire et des contraintes en base de données.",
+      "Double vente impossible et factures conformes (numérotation, factures immuables, avoirs).",
+    ],
     domain: 'Développement web',
     context: 'Stage',
     title: 'Catalogue et facturation',
@@ -147,6 +212,14 @@ export const PROJECTS = [
   },
   {
     id: 'job-aggregator',
+    color: '#7CC8C0',
+    icon: 'M4 8h16v11H4z M9 8V5h6v3 M4 13h16',
+    // Le problème, ce que j’ai fait, le résultat
+    story: [
+      "Les offres tech sont éparpillées, et certaines ne sont plus vraiment ouvertes.",
+      "Ingestion WeLoveDevs, API Express avec authentification, PostgreSQL et Docker.",
+      "Un dashboard avec un score de pertinence et la détection des offres « fantômes ».",
+    ],
     domain: 'Développement web',
     context: 'EPITECH',
     title: 'Job Aggregator',
@@ -165,6 +238,14 @@ export const PROJECTS = [
   },
   {
     id: 'yowl',
+    color: '#FF6B8B',
+    icon: 'M4 5h16v11H9l-5 4z M12 13s-3-2-3-4a1.5 1.5 0 0 1 3-1a1.5 1.5 0 0 1 3 1c0 2-3 4-3 4z',
+    // Le problème, ce que j’ai fait, le résultat
+    story: [
+      "Les joueurs ont du mal à trouver des coéquipiers à leur niveau.",
+      "Recherche utilisateur, personas, maquettes Figma testées entre pairs.",
+      "Un MVP Next.js : fil, posts, likes et recherche de coéquipiers par jeu et par rang.",
+    ],
     domain: 'Développement web',
     context: 'EPITECH',
     title: 'Yowl',
@@ -184,6 +265,14 @@ export const PROJECTS = [
   },
   {
     id: '2dgame',
+    color: '#8BE38B',
+    icon: 'M6 9h12a3 3 0 0 1 3 3v2a3 3 0 0 1-5 2l-1-1H9l-1 1a3 3 0 0 1-5-2v-2a3 3 0 0 1 3-3z M8 11v3 M6.5 12.5h3 M15 12h.01 M17 14h.01',
+    // Le problème, ce que j’ai fait, le résultat
+    story: [
+      "Créer un jeu d’action en binôme, avec un code qui reste maintenable.",
+      "Les règles dans un module Java pur, séparé de libGDX, avec les patterns State, Strategy, Observer et Factory.",
+      "Trois salles, des reliques et un boss en deux phases, testés avec JUnit 5.",
+    ],
     domain: 'Autres',
     context: 'EPITECH',
     title: '2D Game',

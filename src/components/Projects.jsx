@@ -1,141 +1,252 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import './Projects.css'
 import { PROJECTS, REFLECTION_PARAGRAPHS } from '../data/projects'
-
-const DOMAINS = ['Data & IA', 'Développement web', 'Autres']
-const DOMAIN_CLASS = { 'Data & IA': 'data', 'Développement web': 'web', Autres: 'other' }
+import ProjectScene from './ProjectScene'
 
 // Les compétences filtrent les projets par techno via cet événement
 export const FILTER_EVENT = 'projects:filter'
 
-function Preview({ project }) {
+const STEPS = ['Le problème', 'Ce que j’ai fait', 'Le résultat']
+const LAUNCH_MS = 420
+// Taille de dessin du MacBook (écran + bordures), mise à l'échelle de la fenêtre
+const MAC_W = 1060
+const MAC_H = 700
+
+function Icon({ project, size = 34 }) {
   return (
-    <div className="ppreview" key={project.id}>
-      <div className="ppreview__top">
-        <span className={`pbadge pbadge--${DOMAIN_CLASS[project.domain]}`}>{project.domain}</span>
-        {project.context !== 'EPITECH' && <span className="ppreview__context">{project.context}</span>}
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" strokeWidth="1.6"
+      strokeLinecap="round" strokeLinejoin="round" style={{ stroke: project.color }} aria-hidden="true">
+      <path d={project.icon} />
+    </svg>
+  )
+}
+
+function ProjectWindow({ project, index, total, origin, onClose, onStep }) {
+  const ref = useRef(null)
+  useEffect(() => { ref.current?.focus() }, [project.id])
+
+  return (
+    <div className="pwin-layer" style={{ transformOrigin: origin }}>
+      <div className="pwin" ref={ref} role="dialog" aria-modal="true" aria-label={project.title} tabIndex={-1}
+        style={{ '--theme': project.color }}>
+        <div className="pwin__bar">
+          <button type="button" className="pwin__dot pwin__dot--close" onClick={onClose} aria-label="Fermer la fenêtre" />
+          <span className="pwin__dot pwin__dot--min" aria-hidden="true" />
+          <span className="pwin__dot pwin__dot--max" aria-hidden="true" />
+          <span className="pwin__name">{project.title} · {index + 1} sur {total}</span>
+          <button type="button" className="pwin__nav" onClick={() => onStep(-1)} aria-label="Projet précédent">‹</button>
+          <button type="button" className="pwin__nav" onClick={() => onStep(1)} aria-label="Projet suivant">›</button>
+        </div>
+
+        <div className="pwin__scroll" key={project.id}>
+          <header className="pwin__banner">
+            <span className="app-tile app-tile--lg"><Icon project={project} size={38} /></span>
+            <div className="pwin__heading">
+              <h3 className="pwin__title">{project.title}</h3>
+              <p className="pwin__meta">
+                <span className="pwin__badge">{project.domain}</span>
+                {project.context === 'EPITECH' ? 'Projet EPITECH' : project.context}
+              </p>
+            </div>
+            {project.result && (
+              <p className="pwin__metric">
+                <strong>{project.result.value}</strong>
+                <span>{project.result.label}</span>
+              </p>
+            )}
+          </header>
+
+          <div className="pwin__body">
+            <div className="pwin__side">
+              <ProjectScene id={project.id} />
+              <ul className="pwin__tech">
+                {project.tech.map((t) => <li key={t}>{t}</li>)}
+              </ul>
+              {(project.github || project.live) && (
+                <p className="pwin__links">
+                  {project.github && <a href={project.github} className="pwin__cta" target="_blank" rel="noopener noreferrer">Voir le code</a>}
+                  {project.live && <a href={project.live} className="link" target="_blank" rel="noopener noreferrer">Prototype</a>}
+                </p>
+              )}
+            </div>
+
+            <ol className="pwin__story">
+              {project.story.map((text, i) => (
+                <li key={STEPS[i]} style={{ '--i': i }}>
+                  <span className="pwin__step"><b>{i + 1}</b>{STEPS[i]}</span>
+                  <p>{text}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
       </div>
-      <h3 className="ppreview__title">{project.title}</h3>
-      {project.result && (
-        <p className="ppreview__result">
-          <strong>{project.result.value}</strong>
-          <span>{project.result.label}</span>
-        </p>
-      )}
-      <p className="ppreview__summary">{project.summary}</p>
-      <ul className="ppreview__tech">
-        {project.tech.map((t) => <li key={t}>{t}</li>)}
-      </ul>
-      {(project.github || project.live) && (
-        <p className="ppreview__links">
-          {project.github && (
-            <a href={project.github} className="link" target="_blank" rel="noopener noreferrer">Code source</a>
-          )}
-          {project.live && (
-            <a href={project.live} className="link" target="_blank" rel="noopener noreferrer">Prototype</a>
-          )}
-        </p>
-      )}
     </div>
   )
 }
 
 export default function Projects() {
-  const [filter, setFilter] = useState({ type: 'all' })
-  const [activeId, setActiveId] = useState(PROJECTS[0].id)
-  const filtersRef = useRef(null)
-  const [pill, setPill] = useState({ left: 0, width: 0 })
+  const stageRef = useRef(null)
+  const screenRef = useRef(null)
+  const iconRefs = useRef({})
+  const timer = useRef(0)
+  const [openId, setOpenId] = useState(null)
+  const [launching, setLaunching] = useState(null)
+  const [origin, setOrigin] = useState('50% 50%')
+  const [tech, setTech] = useState(null)
+  const [interacted, setInteracted] = useState(false)
+  const [cursor, setCursor] = useState(null)
 
-  const items = PROJECTS.filter((p) =>
-    filter.type === 'domain' ? p.domain === filter.value
-      : filter.type === 'tech' ? p.tech.includes(filter.value)
-        : true,
-  )
-  const active = items.find((p) => p.id === activeId) ?? items[0]
-  const filterKey = filter.type === 'all' ? 'all' : `${filter.type}:${filter.value}`
+  const index = PROJECTS.findIndex((p) => p.id === openId)
+  const project = PROJECTS[index]
 
-  const applyFilter = (next) => {
-    setFilter(next)
-    const first = PROJECTS.find((p) =>
-      next.type === 'domain' ? p.domain === next.value
-        : next.type === 'tech' ? p.tech.includes(next.value)
-          : true,
-    )
-    if (first) setActiveId(first.id)
-  }
-
-  // Filtre envoyé par la section Compétences
+  // Zoom dans l'écran piloté par le défilement : --p de 0 (Mac de trois quarts) à 1 (face à l'écran)
   useEffect(() => {
-    const onFilter = (e) => applyFilter({ type: 'tech', value: e.detail })
+    const stage = stageRef.current
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const rect = stage.getBoundingClientRect()
+      const range = rect.height - window.innerHeight
+      const p = reduced ? 1 : Math.min(1, Math.max(0, -rect.top / Math.max(range, 1)))
+      // La barre de navigation fixe (72 px) est retirée de la hauteur disponible
+      const fit = Math.min((window.innerWidth * 0.94) / MAC_W, ((window.innerHeight - 72) * 0.92) / MAC_H)
+      stage.style.setProperty('--p', p.toFixed(3))
+      stage.style.setProperty('--fit', fit.toFixed(3))
+    }
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update) }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [])
+
+  // Le curseur de démonstration vise les deux premières icônes (coordonnées de l'écran)
+  useLayoutEffect(() => {
+    const pos = PROJECTS.slice(0, 2).map((p) => {
+      const el = iconRefs.current[p.id]
+      return el && { x: el.offsetLeft + el.offsetWidth / 2, y: el.offsetTop + 34 }
+    })
+    if (pos.every(Boolean)) {
+      setCursor({ '--c1x': `${pos[0].x}px`, '--c1y': `${pos[0].y}px`, '--c2x': `${pos[1].x}px`, '--c2y': `${pos[1].y}px` })
+    }
+  }, [])
+
+  // Filtre envoyé par la section Compétences : les autres icônes s'estompent
+  useEffect(() => {
+    const onFilter = (e) => { setTech(e.detail); setInteracted(true) }
     window.addEventListener(FILTER_EVENT, onFilter)
     return () => window.removeEventListener(FILTER_EVENT, onFilter)
   }, [])
 
-  // Pastille qui glisse sous le filtre actif
-  useLayoutEffect(() => {
-    const btn = filtersRef.current?.querySelector('[aria-pressed="true"]')
-    if (btn) setPill({ left: btn.offsetLeft, width: btn.offsetWidth })
-  }, [filterKey])
+  useEffect(() => () => clearTimeout(timer.current), [])
 
-  const chips = [
-    { key: 'all', label: 'Tous', value: { type: 'all' } },
-    ...DOMAINS.map((d) => ({ key: `domain:${d}`, label: d, value: { type: 'domain', value: d } })),
-    ...(filter.type === 'tech' ? [{ key: filterKey, label: `${filter.value} ×`, value: { type: 'all' }, tech: true }] : []),
-  ]
+  const close = () => {
+    const id = openId
+    setOpenId(null)
+    iconRefs.current[id]?.focus()
+  }
+
+  // Échap ferme la fenêtre
+  useEffect(() => {
+    if (!openId) return undefined
+    const onKey = (e) => { if (e.key === 'Escape') close() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [openId])
+
+  const launch = (p) => {
+    setInteracted(true)
+    const screen = screenRef.current
+    const icon = iconRefs.current[p.id]
+    if (screen && icon) {
+      const box = screen.getBoundingClientRect()
+      const r = icon.getBoundingClientRect()
+      setOrigin(`${((r.left + r.width / 2 - box.left) / box.width) * 100}% ${((r.top + r.height / 2 - box.top) / box.height) * 100}%`)
+    }
+    // On termine le zoom si le Mac n'est pas encore face au visiteur
+    const stage = stageRef.current
+    if (window.innerWidth > 900 && Number(stage.style.getPropertyValue('--p')) < 1) {
+      window.scrollTo({ top: stage.offsetTop + stage.offsetHeight - window.innerHeight, behavior: 'smooth' })
+    }
+    clearTimeout(timer.current)
+    setOpenId(null)
+    setLaunching(p.id)
+    timer.current = setTimeout(() => { setOpenId(p.id); setLaunching(null) }, LAUNCH_MS)
+  }
+
+  const step = (d) => setOpenId(PROJECTS[(index + d + PROJECTS.length) % PROJECTS.length].id)
 
   return (
     <section className="section projects" id="projects">
       <div className="container projects__head">
         <div>
           <h2 className="section__title">Projets</h2>
-          <p className="section__note">Choisissez un projet pour l’aperçu.</p>
-        </div>
-
-        <div className="pfilters" ref={filtersRef} role="group" aria-label="Filtrer les projets">
-          <span className="pfilters__pill" style={{ transform: `translateX(${pill.left}px)`, width: pill.width }} aria-hidden="true" />
-          {chips.map((c) => (
-            <button
-              key={c.key}
-              type="button"
-              className={`pfilters__btn${c.tech ? ' pfilters__btn--tech' : ''}`}
-              aria-pressed={c.tech ? true : filterKey === c.key}
-              onClick={() => applyFilter(c.value)}
-              aria-label={c.tech ? `Retirer le filtre ${filter.value}` : undefined}
-            >
-              {c.label}
-            </button>
-          ))}
+          <p className="section__note">Cliquez sur une icône pour ouvrir un projet.</p>
         </div>
       </div>
 
-      <div className="container projects__body">
-        <ul className="plist" key={filterKey}>
-          {items.map((p, i) => {
-            const isActive = p.id === active?.id
-            return (
-              <li key={p.id} className={`plist__item${isActive ? ' plist__item--active' : ''}`} style={{ '--i': i }}>
-                <button
-                  type="button"
-                  className="plist__btn"
-                  aria-expanded={isActive}
-                  onMouseEnter={() => setActiveId(p.id)}
-                  onFocus={() => setActiveId(p.id)}
-                  onClick={() => setActiveId(p.id)}
-                >
-                  <span className={`plist__dot plist__dot--${DOMAIN_CLASS[p.domain]}`} aria-hidden="true" />
-                  <span className="plist__title">{p.title}</span>
-                  {p.result && <span className="plist__metric">{p.result.value}</span>}
-                </button>
-                {/* Sur mobile, l'aperçu s'ouvre sous le titre */}
-                {isActive && <div className="plist__inline"><Preview project={p} /></div>}
-              </li>
-            )
-          })}
-        </ul>
+      <div className="mac-stage" ref={stageRef}>
+        <div className="mac-sticky">
+          <div className="mac">
+            <div className="mac__lid">
+              <div className="mac__screen" ref={screenRef}>
+                <div className="mac__menubar">
+                  <span className="mac__user">Christophe</span>
+                  {tech
+                    ? <button type="button" className="mac__filter" onClick={() => setTech(null)}>Filtre : {tech} ×</button>
+                    : <span>{PROJECTS.length} projets</span>}
+                </div>
 
-        <aside className="projects__preview" aria-live="polite">
-          {active && <Preview project={active} />}
-        </aside>
+                <ul className="desk" onPointerEnter={() => setInteracted(true)}>
+                  {PROJECTS.map((p) => {
+                    const dim = tech && !p.tech.includes(tech)
+                    return (
+                      <li key={p.id}>
+                        <button
+                          type="button"
+                          ref={(el) => { iconRefs.current[p.id] = el }}
+                          className={`app${p.id === launching ? ' app--launch' : ''}${p.id === openId ? ' app--open' : ''}${dim ? ' app--dim' : ''}`}
+                          style={{ '--theme': p.color }}
+                          onClick={() => launch(p)}
+                          aria-label={`Ouvrir ${p.title}`}
+                        >
+                          <span className="app-tile"><Icon project={p} /></span>
+                          <span className="app__name">{p.title}</span>
+                        </button>
+                      </li>
+                    )
+                  })}
+                </ul>
+
+                {!interacted && cursor && (
+                  <span className="demo-cursor" style={cursor} aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 2l15 11-6.5 1.2L16 21l-3 1.4-3.4-6.8L4 20z" fill="#fff" stroke="#0D1321" strokeWidth="1.4" strokeLinejoin="round" /></svg>
+                    <span className="demo-cursor__ring" />
+                  </span>
+                )}
+
+                <div className="mac__dock" aria-hidden="true">
+                  <span /><span /><span /><span />
+                </div>
+
+                {project && (
+                  <>
+                    <div className="pwin-backdrop" onClick={close} />
+                    <ProjectWindow project={project} index={index} total={PROJECTS.length}
+                      origin={origin} onClose={close} onStep={step} />
+                  </>
+                )}
+              </div>
+            </div>
+            <div className="mac__base"><span /></div>
+          </div>
+        </div>
       </div>
 
       <div className="container projects__reflection">

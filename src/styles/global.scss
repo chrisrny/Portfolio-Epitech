@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=Press+Start+2P&display=swap');
 
 /* ─── Reset ──────────────────────────────────────────── */
 *, *::before, *::after {
@@ -13,22 +13,25 @@ ul {
 
 /* ─── Tokens ─────────────────────────────────────────── */
 :root {
-  --bg:      #16132A;
-  --raised:  #1E1A36;
-  --rule:    #2E2949;
-  --rule-hover: #3E3762;
-  --text:    #ECE9F5;
-  --text-2:  #C9C4DD;
-  --muted:   #A09AB8;
+  --bg:      #0D1321;
+  --raised:  #141C2E;
+  --rule:    #243049;
+  --rule-hover: #33415E;
+  --text:    #E8EEF6;
+  --text-2:  #C3CDDB;
+  --muted:   #93A1B5;
 
-  --accent:       #B9A2FF;
-  --accent-hover: #CDBBFF;
-  --accent-soft:  rgba(185, 162, 255, 0.12);
-  --accent-line:  rgba(185, 162, 255, 0.45);
-  --on-accent:    #16132A;
+  --accent:       #4CC9F0;
+  --accent-hover: #7DDAF5;
+  --accent-soft:  rgba(76, 201, 240, 0.12);
+  --accent-line:  rgba(76, 201, 240, 0.45);
+  --on-accent:    #0D1321;
+
+  /* Troisième couleur : pastille web, 3e cluster du Hero */
+  --tertiary:     #B9A2FF;
 
   /* Couleur complémentaire : chiffres clés et mises en avant */
-  --highlight:    #F2C27D;
+  --highlight:    #FF7A59;
 
   --container: 1440px;
 
@@ -47,7 +50,7 @@ html {
 body {
   background-color: var(--bg);
   /* Papier millimétré : une grille de points très discrète */
-  background-image: radial-gradient(circle, rgba(236, 233, 245, 0.05) 1px, transparent 1.5px);
+  background-image: radial-gradient(circle, rgba(232, 238, 246, 0.05) 1px, transparent 1.5px);
   background-size: 28px 28px;
   color: var(--text);
   font-family: var(--font);

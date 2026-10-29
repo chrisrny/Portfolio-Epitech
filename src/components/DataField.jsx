@@ -73,7 +73,7 @@ export default function DataField() {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     const css = getComputedStyle(document.documentElement)
-    const colors = [css.getPropertyValue('--accent'), css.getPropertyValue('--highlight'), '#7CC8C0'].map((c) => c.trim())
+    const colors = [css.getPropertyValue('--accent'), css.getPropertyValue('--highlight'), css.getPropertyValue('--tertiary')].map((c) => c.trim())
     const muted = css.getPropertyValue('--muted').trim()
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 

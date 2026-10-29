@@ -38,7 +38,7 @@
   grid-column: 3;
   justify-content: flex-end;
   background:
-    radial-gradient(120% 90% at 100% 0%, rgba(242, 194, 125, 0.12), transparent 60%),
+    radial-gradient(120% 90% at 100% 0%, rgba(255, 122, 89, 0.12), transparent 60%),
     var(--raised);
 }
 
