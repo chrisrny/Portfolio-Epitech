@@ -26,6 +26,49 @@ function Folder({ project, size = 76 }) {
   )
 }
 
+// Clavier : 5 rangées de 14 touches, puis la rangée de la barre d'espace
+const KEY_ROWS = 5
+const KEYS_PER_ROW = 14
+
+// Dock : des apps « génériques » du quotidien d'un étudiant data
+const DOCK = [
+  { id: 'finder', label: 'Finder' },
+  { id: 'terminal', label: 'Terminal' },
+  { id: 'code', label: 'Éditeur de code' },
+  { id: 'notebook', label: 'Notebooks' },
+  { id: 'browser', label: 'Navigateur' },
+  { id: 'trash', label: 'Corbeille' },
+]
+
+function DockIcon({ id }) {
+  switch (id) {
+    case 'finder':
+      return (
+        <svg viewBox="0 0 40 40"><rect width="40" height="40" rx="9" fill="#5AB0F7" /><path d="M20 0h11a9 9 0 0 1 9 9v22a9 9 0 0 1-9 9H20c3-7 4-13 0-20s-3-14 0-20z" fill="#E8F2FC" /><path d="M12 13v4M28 13v4" stroke="#0D1321" strokeWidth="2.4" strokeLinecap="round" /><path d="M11 26c5 4 13 4 18 0" stroke="#0D1321" strokeWidth="2.2" fill="none" strokeLinecap="round" /></svg>
+      )
+    case 'terminal':
+      return (
+        <svg viewBox="0 0 40 40"><rect width="40" height="40" rx="9" fill="#1A1D23" /><rect x="0.5" y="0.5" width="39" height="39" rx="8.5" fill="none" stroke="#3A3F4A" /><path d="M9 14l6 5-6 5" stroke="#7EE787" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" /><path d="M18 26h10" stroke="#7EE787" strokeWidth="2.4" strokeLinecap="round" /></svg>
+      )
+    case 'code':
+      return (
+        <svg viewBox="0 0 40 40"><rect width="40" height="40" rx="9" fill="#2F6FD8" /><path d="M15 13l-7 7 7 7M25 13l7 7-7 7" stroke="#fff" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
+      )
+    case 'notebook':
+      return (
+        <svg viewBox="0 0 40 40"><rect width="40" height="40" rx="9" fill="#F4F1EA" /><path d="M9 15a13 7 0 0 1 22 0M9 25a13 7 0 0 0 22 0" stroke="#F37726" strokeWidth="2.6" fill="none" strokeLinecap="round" /><circle cx="29" cy="9" r="2" fill="#767677" /><circle cx="11" cy="32" r="2.4" fill="#767677" /></svg>
+      )
+    case 'browser':
+      return (
+        <svg viewBox="0 0 40 40"><rect width="40" height="40" rx="9" fill="#E8EEF6" /><circle cx="20" cy="20" r="13" fill="#4CC9F0" /><path d="M20 20l7-7-4 11z" fill="#FF7A59" /><path d="M20 20l-7 7 4-11z" fill="#fff" /></svg>
+      )
+    default:
+      return (
+        <svg viewBox="0 0 40 40"><rect width="40" height="40" rx="9" fill="#2A2F3A" /><path d="M12 13h16M17 13v-2h6v2M14 13l1.5 16h9L26 13" stroke="#C3CDDB" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
+      )
+  }
+}
+
 function ProjectWindow({ project, index, total, origin, closing, onClose, onStep }) {
   const ref = useRef(null)
   useEffect(() => { ref.current?.focus() }, [project.id])
@@ -103,6 +146,7 @@ export default function Projects() {
   const [tech, setTech] = useState(null)
   const [interacted, setInteracted] = useState(false)
   const [cursor, setCursor] = useState(null)
+  const [now, setNow] = useState(() => new Date())
 
   const index = PROJECTS.findIndex((p) => p.id === openId)
   const project = PROJECTS[index]
@@ -154,6 +198,13 @@ export default function Projects() {
   }, [])
 
   useEffect(() => () => clearTimeout(timer.current), [])
+
+  // Heure réelle dans la barre de menus
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30000)
+    return () => clearInterval(id)
+  }, [])
+  const clock = `${now.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })} ${now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`
 
   // Position d'une icône dans l'écran, en %, pour ouvrir / refermer la fenêtre vers elle
   const originOf = (id) => {
@@ -221,11 +272,17 @@ export default function Projects() {
             <div className="mac__lid">
               <div className="mac__screen" ref={screenRef}>
                 <div className="mac__menubar">
-                  <span className="mac__user">Christophe</span>
-                  {tech
-                    ? <button type="button" className="mac__filter" onClick={() => setTech(null)}>Filtre : {tech} ×</button>
-                    : <span>{PROJECTS.length} projets</span>}
+                  <span className="mac__menus" aria-hidden="true">
+                    <b>Finder</b><span>Fichier</span><span>Édition</span><span>Présentation</span><span>Aller</span><span>Fenêtre</span><span>Aide</span>
+                  </span>
+                  <span className="mac__status">
+                    {tech && <button type="button" className="mac__filter" onClick={() => setTech(null)}>Filtre : {tech} ×</button>}
+                    <svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true"><path d="M1 4.5a10 10 0 0 1 14 0M3.5 7a6.5 6.5 0 0 1 9 0M6 9.4a3 3 0 0 1 4 0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+                    <svg width="24" height="12" viewBox="0 0 24 12" aria-hidden="true"><rect x="0.75" y="0.75" width="20" height="10.5" rx="3" fill="none" stroke="currentColor" strokeWidth="1.2" /><rect x="2.5" y="2.5" width="13" height="7" rx="1.5" fill="currentColor" /><path d="M22.5 4v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+                    <span>{clock}</span>
+                  </span>
                 </div>
+                <span className="mac__notch" aria-hidden="true"><i /></span>
 
                 <ul className="desk" onPointerEnter={() => setInteracted(true)}>
                   {PROJECTS.map((p) => {
@@ -256,7 +313,12 @@ export default function Projects() {
                 )}
 
                 <div className="mac__dock" aria-hidden="true">
-                  <span /><span /><span /><span />
+                  {DOCK.map((d, i) => (
+                    <span key={d.id} className={`dock-item${i === DOCK.length - 1 ? ' dock-item--sep' : ''}`} title={d.label}>
+                      <DockIcon id={d.id} />
+                      {d.id === 'finder' && <i className="dock-item__dot" />}
+                    </span>
+                  ))}
                 </div>
 
                 {project && (
@@ -267,8 +329,19 @@ export default function Projects() {
                   </>
                 )}
               </div>
+              {/* Plateau du Mac vu d'en haut : clavier, haut-parleurs et pavé tactile */}
+              <div className="mac__deck" aria-hidden="true">
+                <div className="mac__deck-top">
+                  <span className="mac__speaker" />
+                  <div className="mac__keys">
+                    {Array.from({ length: KEY_ROWS * KEYS_PER_ROW }, (_, i) => <i key={i} />)}
+                    <i /><i /><i /><i /><i className="mac__space" /><i /><i /><i /><i />
+                  </div>
+                  <span className="mac__speaker" />
+                </div>
+                <span className="mac__trackpad" />
+              </div>
             </div>
-            <div className="mac__base"><span /></div>
           </div>
         </div>
       </div>

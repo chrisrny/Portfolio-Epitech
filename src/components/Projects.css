@@ -42,13 +42,18 @@
 }
 
 .mac__lid {
+  position: relative;
   width: 1000px;
   height: 640px;
   box-sizing: border-box;
   padding: 14px 14px 22px;
-  background: #08090C;
-  border-radius: 22px 22px 6px 6px;
-  box-shadow: 0 0 0 2px #2B2F38, 0 50px 100px rgba(0, 0, 0, 0.55);
+  background: #050608;
+  border-radius: 24px 24px 8px 8px;
+  /* liseré d'aluminium autour de la vitre */
+  box-shadow:
+    0 0 0 1.5px #6B717E,
+    0 0 0 3px #2B2F38,
+    0 30px 80px rgba(0, 0, 0, 0.5);
 }
 
 .mac__screen {
@@ -57,41 +62,71 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 6px;
-  background: radial-gradient(120% 90% at 30% 0%, #13203A 0%, #0B1120 60%);
+  border-radius: 8px;
+  background:
+    radial-gradient(55% 75% at 12% 100%, rgba(185, 162, 255, 0.32), transparent 62%),
+    radial-gradient(50% 70% at 92% 0%, rgba(76, 201, 240, 0.28), transparent 60%),
+    radial-gradient(40% 55% at 75% 95%, rgba(255, 122, 89, 0.16), transparent 60%),
+    #0B1120;
 }
 
-.mac__base {
-  width: 1060px;
-  height: 18px;
-  display: flex;
-  justify-content: center;
-  background: linear-gradient(#3A3F4A, #22252C);
-  border-radius: 3px 3px 26px 26px / 3px 3px 16px 16px;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+/* Reflet léger sur la vitre, au-dessus de tout */
+.mac__screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 28%, transparent 42%);
 }
 
-.mac__base span {
-  width: 140px;
+/* Encoche de la caméra */
+.mac__notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 9;
+  width: 170px;
+  height: 24px;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  background: #050608;
+  border-radius: 0 0 12px 12px;
+}
+
+.mac__notch i {
+  width: 7px;
   height: 7px;
-  border-radius: 0 0 8px 8px;
-  background: #1C1F26;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #3B4A6B, #10141C 70%);
 }
 
 .mac__menubar {
+  position: relative;
+  z-index: 6;
   flex-shrink: 0;
   height: 26px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 14px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(10, 15, 28, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   font-size: 12px;
-  color: var(--text-2);
+  color: #E8EEF6;
 }
 
-.mac__user {
-  font-weight: 600;
+.mac__menus,
+.mac__status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mac__menus span {
+  color: rgba(232, 238, 246, 0.85);
 }
 
 .mac__filter {
@@ -110,25 +145,126 @@
   position: absolute;
   bottom: 10px;
   left: 50%;
+  z-index: 2;
   display: flex;
-  gap: 8px;
-  padding: 7px 10px;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 6px 8px;
   transform: translateX(-50%);
-  border: 1px solid var(--rule-hover);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  background: rgba(30, 38, 58, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dock-item {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  transform-origin: bottom center;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.dock-item svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+}
+
+/* Grossissement façon macOS : l'icône survolée et ses voisines */
+.dock-item:hover { transform: scale(1.4) translateY(-4px); }
+.dock-item:hover + .dock-item,
+.dock-item:has(+ .dock-item:hover) { transform: scale(1.18); }
+
+.dock-item--sep {
+  margin-left: 8px;
+}
+
+.dock-item--sep::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dock-item__dot {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: rgba(232, 238, 246, 0.8);
+}
+
+
+
+/* ── Plateau du Mac : clavier vu d'en haut, en perspective, sous l'écran ── */
+.mac__deck {
+  position: absolute;
+  top: 100%;
+  left: -30px;
+  width: 1060px;
+  height: 420px;
+  box-sizing: border-box;
+  padding: 26px 64px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  border-radius: 6px 6px 30px 30px;
+  background: linear-gradient(#1C1F25 0, #3A3F49 10px, #30343C 100%);
+  box-shadow: 0 60px 70px rgba(0, 0, 0, 0.45), inset 0 -3px 0 #23262C;
+  transform-origin: top center;
+  transform: perspective(1100px) rotateX(64deg);
+}
+
+.mac__deck-top {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) 70px;
+  gap: 18px;
+}
+
+.mac__speaker {
+  border-radius: 6px;
+  background-image: radial-gradient(circle, #15171B 1.2px, transparent 1.6px);
+  background-size: 7px 7px;
+}
+
+.mac__keys {
+  display: grid;
+  grid-template-columns: repeat(14, minmax(0, 1fr));
+  gap: 6px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #15171B;
+}
+
+.mac__keys i {
+  height: 32px;
+  border-radius: 5px;
+  background: linear-gradient(#25282F, #1B1D22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.mac__keys .mac__space {
+  grid-column: span 6;
+}
+
+.mac__trackpad {
+  width: 420px;
+  height: 130px;
   border-radius: 14px;
-  background: rgba(20, 28, 46, 0.85);
+  background: linear-gradient(#383D47, #31353E);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
 }
-
-.mac__dock span {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  background: var(--rule);
-}
-
-.mac__dock span:nth-child(1) { background: var(--accent); }
-.mac__dock span:nth-child(2) { background: var(--tertiary); }
-.mac__dock span:nth-child(3) { background: var(--highlight); }
 
 /* ── Icônes du bureau ── */
 .desk {
@@ -620,9 +756,18 @@
     width: auto;
   }
 
-  .mac__base,
+  .mac__deck,
+  .mac__notch,
   .mac__dock,
   .demo-cursor {
+    display: none;
+  }
+
+  .mac__screen::after {
+    display: none;
+  }
+
+  .mac__menus span {
     display: none;
   }
 
