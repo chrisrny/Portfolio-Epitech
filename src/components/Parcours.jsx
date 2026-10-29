@@ -1,3 +1,6 @@
+import { useEffect, useRef } from 'react'
+import './Parcours.css'
+
 const FORMATION = [
   {
     date: '2025 – aujourd’hui',
@@ -52,6 +55,33 @@ function Entries({ items }) {
 }
 
 export default function Parcours() {
+  const timelineRef = useRef(null)
+
+  // La ligne se remplit au défilement ; chaque étape s'allume quand la ligne l'atteint
+  useEffect(() => {
+    const el = timelineRef.current
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const rect = el.getBoundingClientRect()
+      const fill = reduced ? rect.height : Math.min(rect.height, Math.max(0, window.innerHeight * 0.6 - rect.top))
+      el.style.setProperty('--fill', `${fill}px`)
+      el.querySelectorAll('.entry').forEach((entry) => {
+        entry.classList.toggle('entry--lit', entry.offsetTop + 28 <= fill)
+      })
+    }
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update) }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [])
+
   return (
     <section className="section" id="parcours">
       <div className="container">
@@ -59,7 +89,8 @@ export default function Parcours() {
           <h2 className="section__title">Parcours</h2>
         </header>
 
-        <div className="section__body">
+        <div className="section__body timeline" ref={timelineRef}>
+          <span className="timeline__line" aria-hidden="true" />
           <h3 className="subhead">Formation</h3>
           <Entries items={FORMATION} />
           <h3 className="subhead">Expériences</h3>

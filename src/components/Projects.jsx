@@ -1,119 +1,142 @@
-import { useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import './Projects.css'
 import { PROJECTS, REFLECTION_PARAGRAPHS } from '../data/projects'
 
+const DOMAINS = ['Data & IA', 'Développement web', 'Autres']
 const DOMAIN_CLASS = { 'Data & IA': 'data', 'Développement web': 'web', Autres: 'other' }
 
-const GithubIcon = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
-    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
-  </svg>
-)
+// Les compétences filtrent les projets par techno via cet événement
+export const FILTER_EVENT = 'projects:filter'
 
-const ExternalIcon = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-    <polyline points="15 3 21 3 21 9" />
-    <line x1="10" y1="14" x2="21" y2="3" />
-  </svg>
-)
-
-const Chevron = ({ dir }) => (
-  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <polyline points={dir === 'left' ? '15 18 9 12 15 6' : '9 18 15 12 9 6'} />
-  </svg>
-)
+function Preview({ project }) {
+  return (
+    <div className="ppreview" key={project.id}>
+      <div className="ppreview__top">
+        <span className={`pbadge pbadge--${DOMAIN_CLASS[project.domain]}`}>{project.domain}</span>
+        {project.context !== 'EPITECH' && <span className="ppreview__context">{project.context}</span>}
+      </div>
+      <h3 className="ppreview__title">{project.title}</h3>
+      {project.result && (
+        <p className="ppreview__result">
+          <strong>{project.result.value}</strong>
+          <span>{project.result.label}</span>
+        </p>
+      )}
+      <p className="ppreview__summary">{project.summary}</p>
+      <ul className="ppreview__tech">
+        {project.tech.map((t) => <li key={t}>{t}</li>)}
+      </ul>
+      {(project.github || project.live) && (
+        <p className="ppreview__links">
+          {project.github && (
+            <a href={project.github} className="link" target="_blank" rel="noopener noreferrer">Code source</a>
+          )}
+          {project.live && (
+            <a href={project.live} className="link" target="_blank" rel="noopener noreferrer">Prototype</a>
+          )}
+        </p>
+      )}
+    </div>
+  )
+}
 
 export default function Projects() {
-  const trackRef = useRef(null)
-  const [openId, setOpenId] = useState(null)
+  const [filter, setFilter] = useState({ type: 'all' })
+  const [activeId, setActiveId] = useState(PROJECTS[0].id)
+  const filtersRef = useRef(null)
+  const [pill, setPill] = useState({ left: 0, width: 0 })
 
-  const scroll = (dir) => {
-    const el = trackRef.current
-    const card = el?.firstElementChild
-    if (!card) return
-    // largeur réelle d'une carte + gap → fonctionne aussi sur mobile
-    const step = card.offsetWidth + parseFloat(getComputedStyle(el).columnGap || 0)
-    el.scrollBy({ left: dir * step, behavior: 'smooth' })
+  const items = PROJECTS.filter((p) =>
+    filter.type === 'domain' ? p.domain === filter.value
+      : filter.type === 'tech' ? p.tech.includes(filter.value)
+        : true,
+  )
+  const active = items.find((p) => p.id === activeId) ?? items[0]
+  const filterKey = filter.type === 'all' ? 'all' : `${filter.type}:${filter.value}`
+
+  const applyFilter = (next) => {
+    setFilter(next)
+    const first = PROJECTS.find((p) =>
+      next.type === 'domain' ? p.domain === next.value
+        : next.type === 'tech' ? p.tech.includes(next.value)
+          : true,
+    )
+    if (first) setActiveId(first.id)
   }
+
+  // Filtre envoyé par la section Compétences
+  useEffect(() => {
+    const onFilter = (e) => applyFilter({ type: 'tech', value: e.detail })
+    window.addEventListener(FILTER_EVENT, onFilter)
+    return () => window.removeEventListener(FILTER_EVENT, onFilter)
+  }, [])
+
+  // Pastille qui glisse sous le filtre actif
+  useLayoutEffect(() => {
+    const btn = filtersRef.current?.querySelector('[aria-pressed="true"]')
+    if (btn) setPill({ left: btn.offsetLeft, width: btn.offsetWidth })
+  }, [filterKey])
+
+  const chips = [
+    { key: 'all', label: 'Tous', value: { type: 'all' } },
+    ...DOMAINS.map((d) => ({ key: `domain:${d}`, label: d, value: { type: 'domain', value: d } })),
+    ...(filter.type === 'tech' ? [{ key: filterKey, label: `${filter.value} ×`, value: { type: 'all' }, tech: true }] : []),
+  ]
 
   return (
     <section className="section projects" id="projects">
       <div className="container projects__head">
         <div>
           <h2 className="section__title">Projets</h2>
-          <p className="section__note">Data et IA d’abord, puis le développement web.</p>
+          <p className="section__note">Choisissez un projet pour l’aperçu.</p>
         </div>
-        <div className="projects__controls">
-          <button type="button" className="projects__btn" onClick={() => scroll(-1)} aria-label="Projets précédents">
-            <Chevron dir="left" />
-          </button>
-          <button type="button" className="projects__btn" onClick={() => scroll(1)} aria-label="Projets suivants">
-            <Chevron dir="right" />
-          </button>
+
+        <div className="pfilters" ref={filtersRef} role="group" aria-label="Filtrer les projets">
+          <span className="pfilters__pill" style={{ transform: `translateX(${pill.left}px)`, width: pill.width }} aria-hidden="true" />
+          {chips.map((c) => (
+            <button
+              key={c.key}
+              type="button"
+              className={`pfilters__btn${c.tech ? ' pfilters__btn--tech' : ''}`}
+              aria-pressed={c.tech ? true : filterKey === c.key}
+              onClick={() => applyFilter(c.value)}
+              aria-label={c.tech ? `Retirer le filtre ${filter.value}` : undefined}
+            >
+              {c.label}
+            </button>
+          ))}
         </div>
       </div>
 
-      <ul className="projects__track" ref={trackRef}>
-        {PROJECTS.map((p) => {
-          const open = openId === p.id
-          return (
-            <li key={p.id} className={`pcard${open ? ' pcard--open' : ''}`}>
-              <div className="pcard__top">
-                <span className={`pcard__badge pcard__badge--${DOMAIN_CLASS[p.domain]}`}>{p.domain}</span>
-                {p.context !== 'EPITECH' && <span className="pcard__context">{p.context}</span>}
-                <span className="pcard__links">
-                  {p.github && (
-                    <a href={p.github} target="_blank" rel="noopener noreferrer" aria-label={`Code source de ${p.title} sur GitHub`}>
-                      <GithubIcon />
-                    </a>
-                  )}
-                  {p.live && (
-                    <a href={p.live} target="_blank" rel="noopener noreferrer" aria-label={`Prototype de ${p.title}`}>
-                      <ExternalIcon />
-                    </a>
-                  )}
-                </span>
-              </div>
+      <div className="container projects__body">
+        <ul className="plist" key={filterKey}>
+          {items.map((p, i) => {
+            const isActive = p.id === active?.id
+            return (
+              <li key={p.id} className={`plist__item${isActive ? ' plist__item--active' : ''}`} style={{ '--i': i }}>
+                <button
+                  type="button"
+                  className="plist__btn"
+                  aria-expanded={isActive}
+                  onMouseEnter={() => setActiveId(p.id)}
+                  onFocus={() => setActiveId(p.id)}
+                  onClick={() => setActiveId(p.id)}
+                >
+                  <span className={`plist__dot plist__dot--${DOMAIN_CLASS[p.domain]}`} aria-hidden="true" />
+                  <span className="plist__title">{p.title}</span>
+                  {p.result && <span className="plist__metric">{p.result.value}</span>}
+                </button>
+                {/* Sur mobile, l'aperçu s'ouvre sous le titre */}
+                {isActive && <div className="plist__inline"><Preview project={p} /></div>}
+              </li>
+            )
+          })}
+        </ul>
 
-              <div className="pcard__body">
-                <h3 className="pcard__title">{p.title}</h3>
-                <p className="pcard__summary">{p.summary}</p>
-              </div>
-
-              {p.result && (
-                <p className="pcard__result">
-                  <strong>{p.result.value}</strong>
-                  <span>{p.result.label}</span>
-                </p>
-              )}
-
-              <div className="pcard__details" id={`pcard-${p.id}`} aria-hidden={!open}>
-                <div>
-                  <p>{p.description}</p>
-                  <ul className="pcard__highlights">
-                    {p.highlights.map((h) => <li key={h}>{h}</li>)}
-                  </ul>
-                </div>
-              </div>
-
-              <ul className="pcard__tech">
-                {p.tech.map((t) => <li key={t}>{t}</li>)}
-              </ul>
-
-              <button
-                type="button"
-                className="pcard__toggle"
-                aria-expanded={open}
-                aria-controls={`pcard-${p.id}`}
-                onClick={() => setOpenId(open ? null : p.id)}
-              >
-                {open ? 'Masquer le détail' : 'Voir le détail'}
-              </button>
-            </li>
-          )
-        })}
-      </ul>
+        <aside className="projects__preview" aria-live="polite">
+          {active && <Preview project={active} />}
+        </aside>
+      </div>
 
       <div className="container projects__reflection">
         <h3 className="subhead">Réflexion sur mes travaux</h3>
